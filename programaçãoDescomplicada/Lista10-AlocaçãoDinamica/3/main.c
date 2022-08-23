@@ -14,6 +14,12 @@ int main()
 
     vetor = (int *)malloc(sizeof(int) * tamVetor);
 
+    if (vetor == NULL)
+    {
+        printf("Memória não alocada.");
+        return 1;
+    }
+
     vetorInit = vetor;
 
     printf("Digite %d números: ", tamVetor);
