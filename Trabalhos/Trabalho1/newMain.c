@@ -13,8 +13,8 @@ int main()
 
   for (int i = 0; i < tamVetor; i++)
   {
-    // *vetor = i;
-    *vetor = rand() % 100;
+    *vetor = i;
+    // *vetor = rand() % 100;
     vetor++;
   }
 
@@ -125,5 +125,6 @@ int main()
   }
 
   printf("Número não encontrado.");
+  free(vetorInit);
   return 0;
 }
