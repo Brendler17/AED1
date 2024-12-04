@@ -1,8 +1,7 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-int *main()
-{
+int *main() {
   // INPUTS
   // 1 -> [2,7,11,15] ; target = 9 ; Output [0,1]
   // 2 -> [3, 2, 4] ; target = 6 ; Output [1,2]
@@ -15,14 +14,10 @@ int *main()
   int *response = (int *)malloc(sizeof(int) * 2);
   // *returnSize = 2;
 
-  for (int arrayCounter = 0; arrayCounter < numsSize; arrayCounter++)
-  {
-    for (int sumCounter = 0; sumCounter < numsSize; sumCounter++)
-    {
-      if (arrayCounter != sumCounter)
-      {
-        if (nums[arrayCounter] + nums[sumCounter] == target)
-        {
+  for (int arrayCounter = 0; arrayCounter < numsSize; arrayCounter++) {
+    for (int sumCounter = 0; sumCounter < numsSize; sumCounter++) {
+      if (arrayCounter != sumCounter) {
+        if (nums[arrayCounter] + nums[sumCounter] == target) {
           response[0] = arrayCounter;
           response[1] = sumCounter;
 
