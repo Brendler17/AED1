@@ -7,8 +7,8 @@ int main() {
   printf("Digite um número inteiro de até 3 digitos (100-999): ");
   scanf("%d", &number);
 
-  if (100 > number || number > 999) {
-    printf("Número inválido!");
+  if (number < 100 || number > 999) {
+    printf("Número inválido!\n\n");
     return 1;
   }
 
