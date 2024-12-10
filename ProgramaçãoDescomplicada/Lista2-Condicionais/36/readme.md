@@ -19,19 +19,19 @@ Para calcular a comissão, considere a tabela abaixo:
     </tr>
     <tr>
       <td>Menor que R$80.000,00 e maior ou igual a R$60.000,00</td>
-      <td>R$600,00 + 12% das vendas</td>
+      <td>R$600,00 + 14% das vendas</td>
     </tr>
     <tr>
       <td>Menor que R$60.000,00 e maior ou igual a R$40.000,00</td>
-      <td>R$550,00 + 10% das vendas</td>
+      <td>R$550,00 + 14% das vendas</td>
     </tr>
     <tr>
       <td>Menor que R$40.000,00 e maior que R$20.000,00</td>
-      <td>R$500,00 + 8% das vendas</td>
+      <td>R$500,00 + 14% das vendas</td>
     </tr>
     <tr>
       <td>Menor que R$20.000,00</td>
-      <td>R$400,00 + 4% das vendas</td>
+      <td>R$400,00 + 14% das vendas</td>
     </tr>
   </tbody>
 </table>

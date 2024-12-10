@@ -38,7 +38,7 @@ Leia o preço antigo, calcule e escreva o preço novo, e escreva uma mensagem em
     </tr>
     <tr>
       <td>entre R$ 80 e R$ 120 (inclusive)</td>
-      <td>Normal%</td>
+      <td>Normal</td>
     </tr>
     <tr>
       <td>entre R$ 120 e R$ 200 (inclusive)</td>
