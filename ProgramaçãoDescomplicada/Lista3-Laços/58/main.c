@@ -1,53 +1,26 @@
 #include <stdio.h>
 
 int main() {
-  int numberOfInhabitants, monthlyConsumption, consumerCode;
-  int maxConsumption, minConsumption = __INT_MAX__, averageConsumption = 0;
-  int totalConsumptionOne, totalConsumptionTwo, totalConsumptionThree;
-  // float energyValue;
+  int minRange, maxRange, numberOfDividers = 0, sumPrime = 0;
 
-  printf("Digite o número de habitantes: ");
-  scanf("%d", &numberOfInhabitants);
-  // printf("Digite o valor da energia elétrica: ");
-  // scanf("%f", &energyValue);
+  printf("Digite um intervalo de números inteiros (menor-maior): ");
+  scanf("%d-%d", &minRange, &maxRange);
 
-  for (int counter = 0; counter < numberOfInhabitants; counter++) {
-    printf("Digite o consumo do mês do %dº habitante: ", counter + 1);
-    scanf("%d", &monthlyConsumption);
-    printf("Digite o código do consumidor (1-Residencial, 2-Comercial, 3-Industrial): ");
-    scanf("%d", &consumerCode);
-    printf("\n\n");
-
-    if (maxConsumption < monthlyConsumption) {
-      maxConsumption = monthlyConsumption;
-    }
-    if (minConsumption > monthlyConsumption) {
-      minConsumption = monthlyConsumption;
+  for (int counterRange = minRange; counterRange <= maxRange; counterRange++) {
+    for (int divider = 1; divider <= counterRange; divider++) {
+      if (counterRange % divider == 0) {
+        numberOfDividers++;
+      }
     }
 
-    averageConsumption += monthlyConsumption;
-
-    switch (consumerCode) {
-      case 1:
-        totalConsumptionOne += monthlyConsumption;
-        break;
-      case 2:
-        totalConsumptionTwo += monthlyConsumption;
-        break;
-      case 3:
-        totalConsumptionThree += monthlyConsumption;
-        break;
+    if (numberOfDividers == 2) {
+      sumPrime += counterRange;
     }
+
+    numberOfDividers = 0;
   }
 
-  averageConsumption /= numberOfInhabitants;
-
-  printf("O maior consumo de energia foi: %d kwh.\n", maxConsumption);
-  printf("O menor consumo de energia foi: %d kwh.\n", minConsumption);
-  printf("A média de consumo dos habitantes foi: %d kwh.\n", averageConsumption);
-  printf("Total de consumo residencial foi: %d kwh.\n", totalConsumptionOne);
-  printf("Total de consumo comercial foi: %d kwh.\n", totalConsumptionTwo);
-  printf("Total de consumo industrial foi: %d kwh.\n\n", totalConsumptionThree);
+  printf("A soma entre os números primos contidos no intervalo de %d e %d é igual a %d.\n\n", minRange, maxRange, sumPrime);
 
   return 0;
 }

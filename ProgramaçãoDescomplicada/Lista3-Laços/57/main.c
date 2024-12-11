@@ -1,10 +1,12 @@
 #include <stdio.h>
 
 int main() {
-  int minRange, maxRange, numberOfDividers = 0, sumPrime = 0;
+  int minRange, maxRange, primeCounter = 0;
 
   printf("Digite um intervalo de números inteiros (menor-maior): ");
   scanf("%d-%d", &minRange, &maxRange);
+
+  int numberOfDividers = 0;
 
   for (int counterRange = minRange; counterRange <= maxRange; counterRange++) {
     for (int divider = 1; divider <= counterRange; divider++) {
@@ -14,13 +16,13 @@ int main() {
     }
 
     if (numberOfDividers == 2) {
-      sumPrime += counterRange;
+      primeCounter++;
     }
 
     numberOfDividers = 0;
   }
 
-  printf("A soma entre os números primos contidos no intervalo de %d e %d é igual a %d.\n\n", minRange, maxRange, sumPrime);
+  printf("Existem %d números primos entre o intevalo de %d e %d.\n\n", primeCounter, maxRange, minRange);
 
   return 0;
 }

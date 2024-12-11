@@ -1,1 +1,1 @@
-Faça um programa que some os numeros primos existentes entre A e B, onde A e B são números informados pelo usuário. 
+Faça um programa que conte quantos numeros primos existem entre A e B, onde A e B são números informados pelo usuário.
