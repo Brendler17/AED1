@@ -13,19 +13,21 @@ This problem was taken from <a href=https://leetcode.com/problems/can-place-flow
 <br>
 
 <h3>
-<a href="https://github.com/Brendler17/AED1/blob/main/Trabalhos/Trabalho1/oldMain.c">
-Original Code -> 105 / 130 testcases passed
+<a href="https://github.com/Brendler17/AED1/blob/main/TrabalhosPráticos/Trabalho1/src/oldMain.c">
+Original Code
 </a>
+-> 105 / 130 testcases passed
 </h3>
 
 <h3>
-<a href="https://github.com/Brendler17/AED1/blob/main/Trabalhos/Trabalho1/newMain.c">
-Complemented Code -> 130 / 130 testcases passed
+<a href="https://github.com/Brendler17/AED1/blob/main/TrabalhosPráticos/Trabalho1/src/newMain.c">
+Complemented Code 
 </a>
+-> 130 / 130 testcases passed
 </h3>
 
 <h3>
-<a href="https://github.com/Brendler17/AED1/blob/main/Trabalhos/Trabalho1/newMain.c">
+<a href="https://github.com/Brendler17/AED1/blob/main/TrabalhosPráticos/Trabalho1/src/optimizedMain.c">
 Optimized Code
 </a>
 </h3>
