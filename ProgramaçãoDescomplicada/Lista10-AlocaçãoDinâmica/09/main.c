@@ -9,7 +9,7 @@ int main() {
     printf("Digite um número: ");
     scanf("%d", &number);
 
-    if (number > 0) {
+    if (number >= 0) {
       buffer = (int*)realloc(buffer, countElements * sizeof(int));
       if (buffer == NULL) {
         printf("Erro ao alocar memória!");
@@ -19,7 +19,7 @@ int main() {
       buffer[countElements - 1] = number;
       countElements++;
     }
-  } while (number > 0);
+  } while (number >= 0);
 
   if (buffer) {
     printf("\nO vetor digitado é: ");
