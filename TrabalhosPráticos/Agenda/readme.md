@@ -4,13 +4,14 @@
 
 Faça uma agenda com o seguinte menu:
 
-1- Adicionar Pessoa (Nome, Idade, email)
-2- Remover Pessoa
-3- Buscar Pessoa
-4- Listar todos
+1- Adicionar Pessoa (Nome, Idade, email)<br>
+2- Remover Pessoa<br>
+3- Buscar Pessoa<br>
+4- Listar todos<br>
 5- Sair
 
-O desafio é não poder criar variáveis e sim um buffer de memória (void *pBuffer). Nisso vocês terão que fazer o trabalho que o Sistema Operacional faz para vocês ao organizar a memória.
+O desafio é não poder criar variáveis e sim um buffer de memória (void *pBuffer).<br>
+Nisso vocês terão que fazer o trabalho que o Sistema Operacional faz para vocês ao organizar a memória.
 
 Regras:
 
