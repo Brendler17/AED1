@@ -50,7 +50,7 @@ void showMenu() {
 }
 
 int main(int argc, char const *argv[]) {
-  void *pBuffer, *endBuffer, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people;
+  void *pBuffer, *endBuffer, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people, *counter;
 
   pBuffer = (void *)malloc(2 * sizeof(int) + sizeof(size_t));
   if (pBuffer == NULL) {
@@ -116,7 +116,38 @@ int main(int argc, char const *argv[]) {
         printf("Buscar Pessoa");
         break;
       case 4:
-        printf("Listar Pessoas");
+        tempBuffer = (void *)realloc(pBuffer, 2 * sizeof(int) + sizeof(size_t) + (*(int *)counterPeoples) * (*(size_t *)peopleLenght) + sizeof(int));
+        if (tempBuffer == NULL) {
+          printf("\nErro ao alocar memória!\n");
+          free(pBuffer);
+          return 1;
+        }
+
+        pBuffer = tempBuffer;
+        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &peoplesBuffer, &endBuffer, &people);
+        counter = endBuffer - sizeof(int);
+
+        system("clear");
+        printf("\n-------------- Listar Agenda --------------\n");
+        for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
+          people = peoplesBuffer + (*(int *)counter) * (*(size_t *)peopleLenght);
+          printf("Nome: %s\n", (char *)people);
+          printf("Idade: %d\n", *(int *)(people + 50 * sizeof(char)));
+          printf("E-Mail: %s\n", (char *)(people + 50 * sizeof(char) + sizeof(int)));
+          printf("----------------------------------------------\n");
+        }
+        printf("\n");
+
+        tempBuffer = (void *)realloc(pBuffer, 2 * sizeof(int) + sizeof(size_t) + (*(int *)counterPeoples) * (*(size_t *)peopleLenght));
+        if (tempBuffer == NULL) {
+          printf("\nErro ao alocar memória!\n");
+          free(pBuffer);
+          return 1;
+        }
+
+        pBuffer = tempBuffer;
+        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &peopleLenght, &endBuffer, &people);
+
         break;
       case 5:
         printf("\nSaindo...\n\n");
