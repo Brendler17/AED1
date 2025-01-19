@@ -55,7 +55,7 @@ void showMenu() {
 int main(int argc, char const *argv[]) {
   void *pBuffer, *endBuffer, *bufferSize, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people, *searchName, *counter;
 
-  pBuffer = (void *)malloc(2 * sizeof(int) + sizeof(size_t));
+  pBuffer = (void *)malloc(2 * sizeof(int) + 2 * sizeof(size_t));
   if (pBuffer == NULL) {
     printf("\nErro ao alocar memória!\n");
     return 1;
@@ -64,8 +64,10 @@ int main(int argc, char const *argv[]) {
   userOption = pBuffer;
   counterPeoples = pBuffer + sizeof(int);
   peopleLenght = pBuffer + sizeof(int) + sizeof(int);
-  endBuffer = pBuffer + 2 * sizeof(int) + sizeof(size_t);
+  bufferSize = pBuffer + sizeof(int) + sizeof(int) + sizeof(size_t);
+  endBuffer = pBuffer + 2 * sizeof(int) + 2 * sizeof(size_t);
 
+  *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
   *(size_t *)peopleLenght = 50 * sizeof(char) + sizeof(int) + 50 * sizeof(char);
   *(int *)counterPeoples = 0;
 
@@ -78,22 +80,26 @@ int main(int argc, char const *argv[]) {
     switch (*(int *)userOption) {
       case 1:
         (*(int *)counterPeoples)++;
-        tempBuffer = (void *)realloc(pBuffer, 2 * sizeof(int) + sizeof(size_t) + (*(int *)counterPeoples) * (*(size_t *)peopleLenght));
+        tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + (*(int *)counterPeoples) * (*(size_t *)peopleLenght));
         if (tempBuffer == NULL) {
-          printf("\nErro ao alocar memória!\n");
+          printf("\nErro ao alocar memória! 1.1\n");
           free(pBuffer);
           return 1;
         }
 
         pBuffer = tempBuffer;
-        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &peoplesBuffer, &endBuffer, &people);
+        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
+        endBuffer = pBuffer + (*(size_t *)bufferSize) + (*(int *)counterPeoples) * (*(size_t *)peopleLenght);
+        *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+
+        people = peoplesBuffer + (*((int *)counterPeoples) - 1) * (*((size_t *)peopleLenght));
 
         system("clear");
         printf("\n-------------- Adicionar Pessoa --------------\n");
         printf("Informe o nome: ");
         fgets(people, 50 * sizeof(char), stdin);
-        if (removeTrailingNewLine(people, &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &people)) {
-          printf("\nErro ao alocar memória!\n");
+        if (removeTrailingNewLine(people, &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
+          printf("\nErro ao alocar memória! 1.2\n");
           free(pBuffer);
           return 1;
         }
@@ -102,8 +108,8 @@ int main(int argc, char const *argv[]) {
         getchar();
         printf("Informe o e-mail: ");
         fgets((people + 50 * sizeof(char) + sizeof(int)), 50 * sizeof(char), stdin);
-        if (removeTrailingNewLine((people + 50 * sizeof(char) + sizeof(int)), &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &people)) {
-          printf("\nErro ao alocar memória!\n");
+        if (removeTrailingNewLine((people + 50 * sizeof(char) + sizeof(int)), &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
+          printf("\nErro ao alocar memória! 1.3\n");
           free(pBuffer);
           return 1;
         }
@@ -167,7 +173,53 @@ int main(int argc, char const *argv[]) {
         }
 
         pBuffer = tempBuffer;
-        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &peopleLenght, &endBuffer, &people);
+        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
+        endBuffer = pBuffer + (*(size_t *)bufferSize) - 50 * sizeof(char) - sizeof(int);
+        *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+
+        break;
+      case 4:
+        if (*(int *)counterPeoples != 0) {
+          tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + sizeof(int));
+          if (tempBuffer == NULL) {
+            printf("\nErro ao alocar memória! 4.1\n");
+            free(pBuffer);
+            return 1;
+          }
+
+          pBuffer = tempBuffer;
+          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
+          endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof(int);
+          *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+
+          counter = endBuffer - sizeof(int);
+
+          system("clear");
+          printf("\n--------------- Listar Agenda ---------------\n");
+          for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
+            people = peoplesBuffer + (*(int *)counter) * (*(size_t *)peopleLenght);
+            printf("Nome: %s\n", (char *)people);
+            printf("Idade: %d\n", *(int *)(people + 50 * sizeof(char)));
+            printf("E-Mail: %s\n", (char *)(people + 50 * sizeof(char) + sizeof(int)));
+            printf("----------------------------------------------\n");
+          }
+
+          tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize - sizeof(int));
+          if (tempBuffer == NULL) {
+            printf("\nErro ao alocar memória! 4.2\n");
+            free(pBuffer);
+            return 1;
+          }
+
+          pBuffer = tempBuffer;
+          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peopleLenght);
+          endBuffer = pBuffer + (*(size_t *)bufferSize) - sizeof(int);
+          *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+
+        } else {
+          system("clear");
+          printf("\nAgenda Vazia!\n");
+        }
 
         break;
       case 5:
