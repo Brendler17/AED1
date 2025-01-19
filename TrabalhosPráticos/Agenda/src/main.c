@@ -10,16 +10,18 @@ void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, vo
   *peoplesBuffer = *pBuffer + 2 * sizeof(int) + 2 * sizeof(size_t);
 }
 
-int removeTrailingNewLine(char *string, void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **people) {
+int removeTrailingNewLine(char *string, void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **bufferSize) {
   void *len;
 
-  void *tempBuffer = (void *)realloc(*pBuffer, 2 * sizeof(int) + sizeof(size_t) + (*((int *)*(counterPeoples))) * (*((size_t *)*(peopleLenght))) + sizeof(size_t));
+  void *tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) + sizeof(size_t));
   if (tempBuffer == NULL) {
     return 1;
   }
 
   *pBuffer = tempBuffer;
-  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, peoplesBuffer, endBuffer, people);
+  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
+  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) + sizeof(size_t);
+  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
 
   len = *endBuffer - sizeof(size_t);
   *(size_t *)len = strlen(string);
@@ -27,13 +29,15 @@ int removeTrailingNewLine(char *string, void **pBuffer, void **counterPeoples, v
     string[(*(size_t *)len) - 1] = '\0';
   }
 
-  tempBuffer = (void *)realloc(*pBuffer, 2 * sizeof(int) + sizeof(size_t) + (*((int *)*counterPeoples)) * (*((size_t *)*peopleLenght)));
+  tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) - sizeof(size_t));
   if (tempBuffer == NULL) {
     return 1;
   }
 
   *pBuffer = tempBuffer;
-  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, peoplesBuffer, endBuffer, people);
+  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
+  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) - sizeof(size_t);
+  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
 
   return 0;
 }
