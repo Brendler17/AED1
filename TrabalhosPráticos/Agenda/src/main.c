@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, void **peopleLenght, void **peoplesBuffer, void **endBuffer, void **people) {
+void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, void **peopleLenght, void **bufferSize, void **peoplesBuffer) {
   *userOption = *pBuffer;
   *counterPeoples = *pBuffer + sizeof(int);
   *peopleLenght = *pBuffer + sizeof(int) + sizeof(int);
-  *peoplesBuffer = *pBuffer + 2 * sizeof(int) + sizeof(size_t);
-  *endBuffer = *peoplesBuffer + *((int *)(*counterPeoples)) * (*((size_t *)*(peopleLenght)));
-  *people = *peoplesBuffer + (*((int *)*(counterPeoples)) - 1) * (*((size_t *)*(peopleLenght)));
+  *bufferSize = *pBuffer + sizeof(int) + sizeof(int) + sizeof(size_t);
+  *peoplesBuffer = *pBuffer + 2 * sizeof(int) + 2 * sizeof(size_t);
 }
 
 int removeTrailingNewLine(char *string, void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **people) {
