@@ -154,10 +154,10 @@ int main(int argc, char const *argv[]) {
           if (strcmp(people, searchName) == 0) {
             system("clear");
             printf("\n----------- Registro Encontrado -----------\n");
-          printf("Nome: %s\n", (char *)people);
-          printf("Idade: %d\n", *(int *)(people + 50 * sizeof(char)));
-          printf("E-Mail: %s\n", (char *)(people + 50 * sizeof(char) + sizeof(int)));
-          printf("----------------------------------------------\n");
+            printf("Nome: %s\n", (char *)people);
+            printf("Idade: %d\n", *(int *)(people + 50 * sizeof(char)));
+            printf("E-Mail: %s\n", (char *)(people + 50 * sizeof(char) + sizeof(int)));
+            printf("----------------------------------------------\n");
             break;
           } else {
             system("clear");
