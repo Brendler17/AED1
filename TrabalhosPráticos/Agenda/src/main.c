@@ -53,7 +53,7 @@ void showMenu() {
 }
 
 int main(int argc, char const *argv[]) {
-  void *pBuffer, *endBuffer, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people, *counter;
+  void *pBuffer, *endBuffer, *bufferSize, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people, *searchName, *counter;
 
   pBuffer = (void *)malloc(2 * sizeof(int) + sizeof(size_t));
   if (pBuffer == NULL) {
