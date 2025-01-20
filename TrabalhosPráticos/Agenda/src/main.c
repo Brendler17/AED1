@@ -53,7 +53,7 @@ void showMenu() {
 }
 
 int main(int argc, char const *argv[]) {
-  void *pBuffer, *endBuffer, *bufferSize, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people, *searchName, *counter;
+  void *pBuffer, *endBuffer, *bufferSize, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people, *searchName, *position, *removedPeople, *counter;
 
   pBuffer = (void *)malloc(2 * sizeof(int) + 2 * sizeof(size_t));
   if (pBuffer == NULL) {
@@ -119,7 +119,57 @@ int main(int argc, char const *argv[]) {
 
         break;
       case 2:
-        printf("Remover Pessoa");
+        if (*(int *)counterPeoples != 0) {
+          tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + sizeof(int));
+          if (tempBuffer == NULL) {
+            printf("\nErro ao alocar memória! 2.1\n");
+            free(pBuffer);
+            return 1;
+          }
+
+          pBuffer = tempBuffer;
+          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
+          endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof(int);
+          *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+
+          position = endBuffer - sizeof(int);
+
+          system("clear");
+          printf("\n-------------- Remover Pessoa --------------\n");
+          *(int *)counterPeoples == 1 ? printf("Digite o nº de registro para remover (1): ") : printf("Digite o nº de registro para remover (1 a %d): ", *(int *)counterPeoples);
+          scanf("%d", (int *)position);
+          if (*(int *)position <= 0 || *(int *)position > *(int *)counterPeoples) {
+            system("clear");
+            printf("\nPosição Inválida!\n");
+            return 1;
+          }
+
+          removedPeople = peoplesBuffer + ((*(int *)position) - 1) * (*(size_t *)peopleLenght);
+
+          memmove(removedPeople, removedPeople + (*(size_t *)peopleLenght), ((*(int *)counterPeoples) - (*(int *)position)) * (*(size_t *)peopleLenght));
+
+          (*(int *)counterPeoples)--;
+
+          tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize - (*(size_t *)peopleLenght) - sizeof(int));
+          if (tempBuffer == NULL) {
+            printf("\nErro ao alocar memória! 2.2\n");
+            free(pBuffer);
+            return 1;
+          }
+
+          pBuffer = tempBuffer;
+          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
+          endBuffer = pBuffer + (*(size_t *)bufferSize) - (*(size_t *)peopleLenght) - sizeof(int);
+          *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+
+          system("clear");
+          printf("\nRegistro removido com sucesso!\n");
+
+        } else {
+          system("clear");
+          printf("\nAgenda Vazia!\n");
+        }
+
         break;
       case 3:
         tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + 50 * sizeof(char) + sizeof(int));
