@@ -10,8 +10,8 @@ void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, vo
   *peoplesBuffer = *pBuffer + 2 * sizeof(int) + 2 * sizeof(size_t);
 }
 
-int removeTrailingNewLine(char *string, void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **bufferSize) {
-  void *len;
+int removeTrailingNewLine(void **offset, void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **bufferSize) {
+  void *len, *string;
 
   void *tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) + sizeof(size_t));
   if (tempBuffer == NULL) {
@@ -23,10 +23,15 @@ int removeTrailingNewLine(char *string, void **pBuffer, void **counterPeoples, v
   *endBuffer = *pBuffer + *(size_t *)*(bufferSize) + sizeof(size_t);
   *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
 
+  *offset = *pBuffer + ((size_t)(*offset - *pBuffer));
+  string = *offset;
+
   len = *endBuffer - sizeof(size_t);
-  *(size_t *)len = strlen(string);
-  if (*(size_t *)len > 0 && string[(*(size_t *)len) - 1] == '\n') {
-    string[(*(size_t *)len) - 1] = '\0';
+  if (string != NULL) {
+    *(size_t *)len = strlen((char *)string);
+    if (*(size_t *)len > 0 && ((char *)string)[(*(size_t *)len) - 1] == '\n') {
+      ((char *)string)[(*(size_t *)len) - 1] = '\0';
+    }
   }
 
   tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) - sizeof(size_t));
@@ -98,7 +103,8 @@ int main(int argc, char const *argv[]) {
         printf("\n-------------- Adicionar Pessoa --------------\n");
         printf("Informe o nome: ");
         fgets(people, 50 * sizeof(char), stdin);
-        if (removeTrailingNewLine(people, &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
+        position = peoplesBuffer + (*((int *)counterPeoples) - 1) * (*((size_t *)peopleLenght));
+        if (removeTrailingNewLine(&position, &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
           printf("\nErro ao alocar memória! 1.2\n");
           free(pBuffer);
           return 1;
@@ -108,7 +114,8 @@ int main(int argc, char const *argv[]) {
         getchar();
         printf("Informe o e-mail: ");
         fgets((people + 50 * sizeof(char) + sizeof(int)), 50 * sizeof(char), stdin);
-        if (removeTrailingNewLine((people + 50 * sizeof(char) + sizeof(int)), &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
+        position = peoplesBuffer + (*((int *)counterPeoples) - 1) * (*((size_t *)peopleLenght)) + 50 * sizeof(char) + sizeof(int);
+        if (removeTrailingNewLine(&position, &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
           printf("\nErro ao alocar memória! 1.3\n");
           free(pBuffer);
           return 1;
@@ -191,8 +198,7 @@ int main(int argc, char const *argv[]) {
         printf("\n-------------- Buscar Pessoa --------------\n");
         printf("Digite o nome que deseja buscar: ");
         fgets(searchName, 50 * sizeof(char), stdin);
-
-        if (removeTrailingNewLine(searchName, &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
+        if (removeTrailingNewLine(&searchName, &pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize)) {
           printf("\nErro ao alocar memória! 3.2\n");
           free(pBuffer);
           return 1;
@@ -280,6 +286,8 @@ int main(int argc, char const *argv[]) {
         break;
     }
   } while (*(int *)userOption != 5);
+
+  free(pBuffer);
 
   return 0;
 }
