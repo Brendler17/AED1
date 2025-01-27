@@ -108,7 +108,7 @@ int main(int argc, char const *argv[]) {
         people = peoplesBuffer + (*((int *)counterPeoples) - 1) * (*((size_t *)peopleLenght));
         offset = endBuffer - sizeof(size_t);
 
-        // system("clear");
+        system("clear");
         printf("\n-------------- Adicionar Pessoa --------------\n");
         printf("Informe o nome: ");
         fgets(people, 50 * sizeof(char), stdin);
@@ -143,7 +143,7 @@ int main(int argc, char const *argv[]) {
         endBuffer = pBuffer + (*(size_t *)bufferSize) - sizeof(size_t);
         *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
-        // system("clear");
+        system("clear");
         printf("\nRegistro adicionado com sucesso!\n");
 
         break;
@@ -163,12 +163,12 @@ int main(int argc, char const *argv[]) {
 
           position = endBuffer - sizeof(int);
 
-          // system("clear");
+          system("clear");
           printf("\n-------------- Remover Pessoa --------------\n");
           *(int *)counterPeoples == 1 ? printf("Digite o nº de registro para remover (1): ") : printf("Digite o nº de registro para remover (1 a %d): ", *(int *)counterPeoples);
           scanf("%d", (int *)position);
           if (*(int *)position <= 0 || *(int *)position > *(int *)counterPeoples) {
-            // system("clear");
+            system("clear");
             printf("\nPosição Inválida!\n");
             return 1;
           }
@@ -191,11 +191,11 @@ int main(int argc, char const *argv[]) {
           endBuffer = pBuffer + (*(size_t *)bufferSize) - (*(size_t *)peopleLenght) - sizeof(int);
           *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
-          // system("clear");
+          system("clear");
           printf("\nRegistro removido com sucesso!\n");
 
         } else {
-          // system("clear");
+          system("clear");
           printf("\nAgenda Vazia!\n");
         }
 
@@ -214,10 +214,9 @@ int main(int argc, char const *argv[]) {
         *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
         offset = endBuffer - sizeof(size_t);
-        counter = endBuffer - sizeof(size_t) - sizeof(int);
         searchName = endBuffer - sizeof(size_t) - sizeof(int) - sizeof(char) * 50;
 
-        // system("clear");
+        system("clear");
         printf("\n-------------- Buscar Pessoa --------------\n");
         printf("Digite o nome que deseja buscar: ");
         fgets(searchName, 50 * sizeof(char), stdin);
@@ -229,11 +228,14 @@ int main(int argc, char const *argv[]) {
           return 1;
         }
 
+        counter = endBuffer - sizeof(size_t) - sizeof(int);
+        searchName = endBuffer - sizeof(size_t) - sizeof(int) - sizeof(char) * 50;
+
         for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
           people = peoplesBuffer + (*(int *)counter) * (*(size_t *)peopleLenght);
 
           if (strcmp(people, searchName) == 0) {
-            // system("clear");
+            system("clear");
             printf("\n----------- Registro Encontrado -----------\n");
             printf("Nome: %s\n", (char *)people);
             printf("Idade: %d\n", *(int *)(people + 50 * sizeof(char)));
@@ -241,7 +243,7 @@ int main(int argc, char const *argv[]) {
             printf("----------------------------------------------\n");
             break;
           } else {
-            // system("clear");
+            system("clear");
             printf("\nRegistro não encontrado!\n");
           }
         }
@@ -275,7 +277,7 @@ int main(int argc, char const *argv[]) {
 
           counter = endBuffer - sizeof(int);
 
-          // system("clear");
+          system("clear");
           printf("\n--------------- Listar Agenda ---------------\n");
           for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
             people = peoplesBuffer + (*(int *)counter) * (*(size_t *)peopleLenght);
@@ -298,7 +300,7 @@ int main(int argc, char const *argv[]) {
           *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
         } else {
-          // system("clear");
+          system("clear");
           printf("\nAgenda Vazia!\n");
         }
 
