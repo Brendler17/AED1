@@ -123,25 +123,26 @@ int main() {
     scanf("%d", &userOption);
 
     switch (userOption) {
-      case 0:
-        element = (Element *)malloc(sizeof(Element));
-        if (element == NULL) {
-          printf("\nErro ao alocar memória!\n");
-          return 1;
-        }
+      case 0: {
+        Element element;
 
+        system("clear");
         printf("Digite o nome: ");
         getchar();
-        fgets(element->name, 30 * sizeof(char), stdin);
-        removeTrailingNewLine(element->name);
+        fgets(element.name, 30 * sizeof(char), stdin);
+        removeTrailingNewLine(element.name);
         printf("Digite a idade: ");
-        scanf("%d", &element->age);
+        scanf("%d", &element.age);
 
-        if (!(push(stack, element))) {
+        if (!(push(stack, &element))) {
+          printf("\nErro ao inserir elemento!\n");
+          clear(stack);
+          free(stack);
           return 1;
         }
 
-        free(element);
+        system("clear");
+        printf("\nElemento inserido com sucesso!\n");
 
         break;
       case 1:
