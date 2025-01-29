@@ -33,45 +33,32 @@ void showMenu() {
   printf("----------------------------------------------\n");
 }
 
-// RESET, EMPTY, FULL, PUSH, POP, CLEAR
-
-bool reset(Stack *stack) {
-  stack = (Stack *)malloc(sizeof(Stack));
-  if (stack == NULL) {
+bool reset(Stack **stack) {
+  *stack = (Stack *)malloc(sizeof(Stack));
+  if (*stack == NULL) {
     printf("\nErro ao alocar memória!\n");
     return false;
   }
 
-  stack->elements = NULL;
-  stack->top = NULL;
-  stack->base = NULL;
-  stack->limit = 0;
+  (*stack)->elements = NULL;
+  (*stack)->top = NULL;
+  (*stack)->base = NULL;
+  (*stack)->limit = 0;
 
   return true;
 }
 
-bool empty(Stack *stack) { return stack->top == 0; }
-
-bool full(Stack *stack) { return false; }
+bool empty(Stack *stack) { return stack->top == NULL; }
 
 bool push(Stack *stack, Element *element) {
-  Element *elements;
-
-  stack->limit++;
-  elements = (Element *)malloc(stack->limit * sizeof(Element));
-  if (elements == NULL) {
+  stack->elements = (Element *)realloc(stack->elements, (stack->limit + 1) * sizeof(Element));
+  if (stack->elements == NULL) {
     printf("\nErro ao alocar memória!\n");
     return false;
   }
 
-  memcpy(elements, stack->elements, stack->limit * sizeof(Element));  // ??
-
-  if (stack->elements) {
-    free(stack->elements);
-  }
-
-  stack->elements = elements;
-  stack->elements[stack->limit - 1] = *element;
+  stack->elements[stack->limit] = *element;
+  stack->limit++;
   stack->top = &stack->elements[stack->limit - 1];
   stack->base = stack->elements;
 
@@ -83,42 +70,39 @@ bool pop(Stack *stack, Element *element) {
     return false;
   }
 
-  Element *elements;
-  element = stack->top;
+  *element = stack->elements[stack->limit - 1];
 
   stack->limit--;
 
   if (stack->limit == 0) {
     free(stack->elements);
-    reset(stack);
-    return false;
+    stack->top = NULL;
+    stack->base = NULL;
+    stack->limit = 0;
+    return true;
   }
 
-  elements = (Element *)malloc(stack->limit * sizeof(Element));
-  if (elements == NULL) {
+  stack->elements = (Element *)realloc(stack->elements, stack->limit * sizeof(Element));
+  if (stack->elements == NULL) {
     printf("\nErro ao alocar memória!\n");
     return false;
   }
 
-  memcpy(elements, stack->elements, (stack->limit + 1) * sizeof(Element));
-
-  if (stack->elements) {
-    free(stack->elements);
-  }
-
-  stack->elements = elements;
   stack->top = &stack->elements[stack->limit - 1];
   stack->base = stack->elements;
+
   return true;
 }
 
 bool clear(Stack *stack) {
-  if (empty(stack)) {
-    return false;
+  if (stack->elements) {
+  free(stack->elements);
   }
 
-  free(stack->elements);
-  free(stack);
+  stack->elements = NULL;
+  stack->top = NULL;
+  stack->base = NULL;
+  stack->limit = 0;
 
   return true;
 }
