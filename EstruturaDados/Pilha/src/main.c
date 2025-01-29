@@ -205,6 +205,14 @@ int main() {
 
         break;
       }
+      case 3: {
+        clear(stack);
+        system("clear");
+        printf("\nTodos registros foram apagados!\n");
+
+        break;
+      }
+
       case 5: {
         printf("\nSaindo...\n");
         clear(stack);
@@ -214,6 +222,8 @@ int main() {
       }
 
       default:
+        system("clear");
+        printf("\nDigite uma opção válida!\n");
         break;
     }
   } while (userOption != 5);
