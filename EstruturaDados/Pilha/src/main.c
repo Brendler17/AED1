@@ -110,7 +110,7 @@ bool clear(Stack *stack) {
 int main() {
   Stack *stack = NULL;
   int userOption;
-  // char removedName[30];
+  char removedName[30];
 
   if (!(reset(&stack))) {
     return 1;
@@ -149,21 +149,69 @@ int main() {
         Element element;
 
         if (pop(stack, &element)) {
+          system("clear");
           printf("\nElemento removido\n");
           printf("Nome: %s\n", element.name);
           printf("Idade: %d\n", element.age);
         } else {
+          system("clear");
           printf("\nErro ao remover elemento!\n");
         }
 
         break;
       }
-      case 5:
+      case 2: {
+        Stack *auxStack = NULL;
+        Element element;
+        bool found = false;
+
+        if (!(reset(&auxStack))) {
+          return 1;
+        }
+
+        system("clear");
+        printf("Digite o nome para remover: ");
+        getchar();
+        fgets(removedName, 30 * sizeof(char), stdin);
+        removeTrailingNewLine(removedName);
+
+        while (!(empty(stack))) {
+          pop(stack, &element);
+
+          if (strcmp(element.name, removedName) == 0) {
+            found = true;
+            break;
+          }
+
+          push(auxStack, &element);
+        }
+
+        if (found) {
+          system("clear");
+          printf("\nRegistro removido com sucesso!\n");
+        } else {
+          system("clear");
+          printf("\nNome não encontrado!\n");
+        }
+
+        while (!(empty(auxStack))) {
+          pop(auxStack, &element);
+          push(stack, &element);
+        }
+
+        clear(auxStack);
+        free(auxStack);
+        auxStack = NULL;
+
+        break;
+      }
+      case 5: {
         printf("\nSaindo...\n");
         clear(stack);
         free(stack);
         stack = NULL;
         break;
+      }
 
       default:
         break;
