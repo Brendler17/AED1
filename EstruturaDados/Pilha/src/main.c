@@ -96,7 +96,7 @@ bool pop(Stack *stack, Element *element) {
 
 bool clear(Stack *stack) {
   if (stack->elements) {
-  free(stack->elements);
+    free(stack->elements);
   }
 
   stack->elements = NULL;
@@ -144,7 +144,9 @@ int main() {
         printf("\nElemento inserido com sucesso!\n");
 
         break;
-        }
+      }
+      case 1: {
+        Element element;
 
         if (pop(stack, &element)) {
           printf("\nElemento removido\n");
@@ -153,9 +155,14 @@ int main() {
         } else {
           printf("\nErro ao remover elemento!\n");
         }
+
         break;
+      }
       case 5:
         printf("\nSaindo...\n");
+        clear(stack);
+        free(stack);
+        stack = NULL;
         break;
 
       default:
