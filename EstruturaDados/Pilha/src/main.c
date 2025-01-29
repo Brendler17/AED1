@@ -27,7 +27,7 @@ void showMenu() {
   printf("0 - Adicionar Pessoa (Nome, Idade)\n");
   printf("1 - Remover Pessoa\n");
   printf("2 - Remover Pessoa por Nome\n");
-  printf("3 - Limpar\n");
+  printf("3 - Limpar Todos\n");
   printf("4 - Listar Pessoas\n");
   printf("5 - Sair\n");
   printf("----------------------------------------------\n");
@@ -109,11 +109,10 @@ bool clear(Stack *stack) {
 
 int main() {
   Stack *stack = NULL;
-  Element *element;
   int userOption;
   // char removedName[30];
 
-  if (!(reset(stack))) {
+  if (!(reset(&stack))) {
     return 1;
   }
 
@@ -145,22 +144,14 @@ int main() {
         printf("\nElemento inserido com sucesso!\n");
 
         break;
-      case 1:
-        element = (Element *)malloc(sizeof(Element));
-        if (element == NULL) {
-          printf("\nErro ao alocar memória!\n");
-          return 1;
         }
 
-        if (pop(stack, element)) {
+        if (pop(stack, &element)) {
           printf("\nElemento removido\n");
-          printf("Nome: %s\n", element->name);
-          printf("Idade: %d\n", element->age);
-
-          free(element);
+          printf("Nome: %s\n", element.name);
+          printf("Idade: %d\n", element.age);
         } else {
-          printf("\nErro ao remover!\n");
-          free(element);
+          printf("\nErro ao remover elemento!\n");
         }
         break;
       case 5:
