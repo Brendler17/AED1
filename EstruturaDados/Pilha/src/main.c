@@ -134,28 +134,27 @@ int main() {
         printf("Digite a idade: ");
         scanf("%d", &element.age);
 
+        system("clear");
         if (!(push(stack, &element))) {
           printf("\nErro ao inserir elemento!\n");
           clear(stack);
           free(stack);
           return 1;
+        } else {
+          printf("\nElemento inserido com sucesso!\n");
         }
-
-        system("clear");
-        printf("\nElemento inserido com sucesso!\n");
 
         break;
       }
       case 1: {
         Element element;
 
+        system("clear");
         if (pop(stack, &element)) {
-          system("clear");
           printf("\nElemento removido\n");
           printf("Nome: %s\n", element.name);
           printf("Idade: %d\n", element.age);
         } else {
-          system("clear");
           printf("\nErro ao remover elemento!\n");
         }
 
@@ -172,33 +171,36 @@ int main() {
 
         system("clear");
         if (!(empty(stack))) {
-        printf("Digite o nome para remover: ");
-        getchar();
-        fgets(removedName, 30 * sizeof(char), stdin);
-        removeTrailingNewLine(removedName);
+          printf("Digite o nome para remover: ");
+          getchar();
+          fgets(removedName, 30 * sizeof(char), stdin);
+          removeTrailingNewLine(removedName);
 
-        while (!(empty(stack))) {
-          pop(stack, &element);
+          while (!(empty(stack))) {
+            pop(stack, &element);
 
-          if (strcmp(element.name, removedName) == 0) {
-            found = true;
-            break;
+            if (strcmp(element.name, removedName) == 0) {
+              found = true;
+              break;
+            }
+
+            push(auxStack, &element);
           }
 
-          push(auxStack, &element);
-        }
-
-        if (found) {
           system("clear");
-          printf("\nRegistro removido com sucesso!\n");
+          if (found) {
+            printf("\nRegistro removido com sucesso!\n");
+          } else {
+            printf("\nNome não encontrado!\n");
+          }
+
+          while (!(empty(auxStack))) {
+            pop(auxStack, &element);
+            push(stack, &element);
+          }
+
         } else {
-          system("clear");
-          printf("\nNome não encontrado!\n");
-        }
-
-        while (!(empty(auxStack))) {
-          pop(auxStack, &element);
-          push(stack, &element);
+          printf("\nRegistro Vazio!\n");
         }
 
         clear(auxStack);
@@ -208,11 +210,10 @@ int main() {
         break;
       }
       case 3: {
-        clear(stack);
         system("clear");
         if (!(empty(stack))) {
           clear(stack);
-        printf("\nTodos registros foram apagados!\n");
+          printf("\nTodos registros foram apagados!\n");
         } else {
           printf("\nRegistro Vazio!\n");
         }
