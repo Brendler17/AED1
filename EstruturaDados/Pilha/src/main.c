@@ -171,6 +171,7 @@ int main() {
         }
 
         system("clear");
+        if (!(empty(stack))) {
         printf("Digite o nome para remover: ");
         getchar();
         fgets(removedName, 30 * sizeof(char), stdin);
@@ -209,7 +210,12 @@ int main() {
       case 3: {
         clear(stack);
         system("clear");
+        if (!(empty(stack))) {
+          clear(stack);
         printf("\nTodos registros foram apagados!\n");
+        } else {
+          printf("\nRegistro Vazio!\n");
+        }
 
         break;
       }
