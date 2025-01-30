@@ -212,7 +212,43 @@ int main() {
 
         break;
       }
+      case 4: {
+        Stack *auxStack = NULL;
+        Element element;
 
+        if (!(reset(&auxStack))) {
+          return 1;
+        }
+
+        system("clear");
+        if (!(empty(stack))) {
+          printf("\n------------------ LISTAR ------------------\n");
+          while (!(empty(stack))) {
+            pop(stack, &element);
+
+            printf("Nome: %s\n", element.name);
+            printf("Idade: %d\n", element.age);
+            printf("----------------------------------------------\n");
+
+            push(auxStack, &element);
+          }
+          printf("\n\n");
+
+          while (!(empty(auxStack))) {
+            pop(auxStack, &element);
+            push(stack, &element);
+          }
+
+        } else {
+          printf("\nRegistro Vazio!\n");
+        }
+
+        clear(auxStack);
+        free(auxStack);
+        auxStack = NULL;
+
+        break;
+      }
       case 5: {
         printf("\nSaindo...\n");
         clear(stack);
