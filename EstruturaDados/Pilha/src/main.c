@@ -76,6 +76,7 @@ bool pop(Stack *stack, Element *element) {
 
   if (stack->limit == 0) {
     free(stack->elements);
+    stack->elements = NULL;
     stack->top = NULL;
     stack->base = NULL;
     stack->limit = 0;
@@ -97,9 +98,9 @@ bool pop(Stack *stack, Element *element) {
 bool clear(Stack *stack) {
   if (stack->elements) {
     free(stack->elements);
+    stack->elements = NULL;
   }
 
-  stack->elements = NULL;
   stack->top = NULL;
   stack->base = NULL;
   stack->limit = 0;
