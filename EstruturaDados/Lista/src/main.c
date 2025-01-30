@@ -122,6 +122,11 @@ bool clear(List *list) {
     current = current->pNext;
     free(auxNode);
   }
+
+  list->pFirst = NULL;
+  list->nodeCount = 0;
+
+  return true;
 }
 
 int main() {
