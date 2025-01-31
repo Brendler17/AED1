@@ -82,32 +82,32 @@ bool pop(List *list, Data *data, size_t position) {
     return false;
   }
 
-  Node *auxNode = list->pFirst;
+  Node *removedNode = list->pFirst;
   Node *previousNode = NULL;
 
   if (position == 0) {
-    list->pFirst = auxNode->pNext;
-    *data = auxNode->data;
-    free(auxNode);
+    list->pFirst = removedNode->pNext;
+    *data = removedNode->data;
+    free(removedNode);
     list->nodeCount--;
     return true;
   }
 
   size_t counter = 0;
-  while (auxNode != NULL && counter < position) {
-    previousNode = auxNode;
-    auxNode = auxNode->pNext;
+  while (removedNode != NULL && counter < position) {
+    previousNode = removedNode;
+    removedNode = removedNode->pNext;
     counter++;
   }
 
-  if (auxNode == NULL) {
+  if (removedNode == NULL) {
     printf("\nPosição Inválida!\n");
     return false;
   }
 
-  previousNode->pNext = auxNode->pNext;
-  *data = auxNode->data;
-  free(auxNode);
+  previousNode->pNext = removedNode->pNext;
+  *data = removedNode->data;
+  free(removedNode);
   list->nodeCount--;
 
   return true;
