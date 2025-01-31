@@ -2,21 +2,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct {
-  Node *pFirst;
-  size_t nodeCount;
-} List;
-
-typedef struct {
-  Data data;
-  Node *pNext;
-} Node;
-
-typedef struct {
+typedef struct Data {
   int code;
   char name[30];
   float price;
 } Data;
+
+typedef struct Node {
+  Data data;
+  struct Node *pNext;
+} Node;
+
+typedef struct {
+  Node *pFirst;
+  size_t nodeCount;
+} List;
 
 bool reset(List **list) {
   *list = (List *)malloc(sizeof(List));
@@ -31,7 +31,7 @@ bool reset(List **list) {
   return true;
 }
 
-bool empty(List *list) { return list->pFirst = NULL; }
+bool empty(List *list) { return list->pFirst == NULL; }
 
 bool push(List *list, Data *data, size_t position) {
   Node *newNode = (Node *)malloc(sizeof(Node));
@@ -40,7 +40,7 @@ bool push(List *list, Data *data, size_t position) {
     return false;
   }
 
-  newNode->data = data;
+  newNode->data = *data;
   newNode->pNext = NULL;
 
   if (list->pFirst == NULL) {
@@ -130,9 +130,34 @@ bool clear(List *list) {
 }
 
 int main() {
-  List *list;
+  List *list = NULL;
+
+  if (!reset(&list)) {
+    return 1;
+  }
+
+  Data item1 = {1, "Produto A", 10.5};
+  Data item2 = {2, "Produto B", 20.3};
+  Data item3 = {3, "Produto C", 30.7};
+
+  push(list, &item1, 0);
+  push(list, &item2, 1);
+  push(list, &item3, 2);
+
+  printf("Nós na lista: %zu\n", list->nodeCount);
+
+  Data removed;
+  if (pop(list, &removed, 1)) {
+    printf("Removido: %s\n", removed.name);
+  }
+
+  printf("Nós na lista após remoção: %zu\n", list->nodeCount);
+
+  clear(list);
+  printf("Lista limpa! Nós restantes: %zu\n", list->nodeCount);
 
   free(list);
+  return 0;
 
   return 0;
 }
