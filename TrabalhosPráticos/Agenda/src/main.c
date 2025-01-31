@@ -91,7 +91,7 @@ int main(int argc, char const *argv[]) {
     getchar();
 
     switch (*(int *)userOption) {
-      case 1:
+      case 1: {
         (*(int *)counterPeoples)++;
         tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + (*(int *)counterPeoples) * (*(size_t *)peopleLenght) + sizeof(size_t));
         if (tempBuffer == NULL) {
@@ -147,7 +147,8 @@ int main(int argc, char const *argv[]) {
         printf("\nRegistro adicionado com sucesso!\n");
 
         break;
-      case 2:
+      }
+      case 2: {
         if (*(int *)counterPeoples != 0) {
           tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + sizeof(int));
           if (tempBuffer == NULL) {
@@ -200,7 +201,8 @@ int main(int argc, char const *argv[]) {
         }
 
         break;
-      case 3:
+      }
+      case 3: {
         tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + 50 * sizeof(char) + sizeof(int) + sizeof(size_t));
         if (tempBuffer == NULL) {
           printf("\nErro ao alocar memória! 3.1\n");
@@ -261,7 +263,8 @@ int main(int argc, char const *argv[]) {
         *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
         break;
-      case 4:
+      }
+      case 4: {
         if (*(int *)counterPeoples != 0) {
           tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + sizeof(int));
           if (tempBuffer == NULL) {
@@ -305,6 +308,7 @@ int main(int argc, char const *argv[]) {
         }
 
         break;
+      }
       case 5:
         printf("\nSaindo...\n\n");
         break;
