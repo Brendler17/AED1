@@ -152,7 +152,8 @@ int main(int argc, char const *argv[]) {
           }
 
           pBuffer = tempBuffer;
-          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
+          tempBuffer = NULL;
+          updatePointers(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age);
           endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof(int);
           *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
@@ -160,11 +161,16 @@ int main(int argc, char const *argv[]) {
 
           system("clear");
           printf("\n--------------- Listar Agenda ---------------\n");
+          currentPerson = peoplesBuffer;
           for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
-            people = peoplesBuffer + (*(int *)counter) * (*(size_t *)peopleLenght);
-            printf("Nome: %s\n", (char *)people);
-            printf("Idade: %d\n", *(int *)(people + 50 * sizeof(char)));
-            printf("E-Mail: %s\n", (char *)(people + 50 * sizeof(char) + sizeof(int)));
+            // getCurrentPerson(&userOption, &counterPeoples, &peoplesBuffer, &currentPerson, &name, &email, &counter);
+
+            printf("Nome: %s\n", (char *)currentPerson);
+            currentPerson += (strlen(currentPerson) + 1) * sizeof(char);
+            printf("E-Mail: %s\n", (char *)currentPerson);
+            currentPerson += (strlen(currentPerson) + 1) * sizeof(char);
+            printf("Idade: %d\n", *(int *)currentPerson);
+            currentPerson += sizeof(int);
             printf("----------------------------------------------\n");
           }
 
