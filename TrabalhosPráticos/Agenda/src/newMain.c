@@ -81,78 +81,20 @@ int main(int argc, char const *argv[]) {
         updatePointers(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age);
         endBuffer = pBuffer + (*(size_t *)bufferSize) + (strlen(name) + 1) * sizeof(char) + (strlen(email) + 1) * sizeof(char) + sizeof(int);
         *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+        // printf("\nBufferSize ao adicionar pessoa: %zu\n", *(size_t *)bufferSize);
 
-                break;
-      }
-      case 2: {
-        if (*(int *)counterPeoples != 0) {
-          tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + sizeof(int));
-          if (tempBuffer == NULL) {
-            printf("\nErro ao alocar memória! 2.1\n");
-            free(pBuffer);
-            return 1;
-          }
+        getCurrentPerson(&userOption, &counterPeoples, &peoplesBuffer, &currentPerson, &name, &email, &counter);
+        memcpy(currentPerson, name, (strlen(name) + 1) * sizeof(char));
+        // printf("Nome: %s\n", (char *)currentPerson);
+        currentPerson += (strlen(name) + 1) * sizeof(char);
 
-          pBuffer = tempBuffer;
-          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
-          endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof(int);
-          *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+        memcpy(currentPerson, email, (strlen(email) + 1) * sizeof(char));
+        // printf("E-Mail: %s\n", (char *)currentPerson);
+        currentPerson += (strlen(email) + 1) * sizeof(char);
 
-          position = endBuffer - sizeof(int);
-
-          system("clear");
-          printf("\n-------------- Remover Pessoa --------------\n");
-          *(int *)counterPeoples == 1 ? printf("Digite o nº de registro para remover (1): ") : printf("Digite o nº de registro para remover (1 a %d): ", *(int *)counterPeoples);
-          scanf("%d", (int *)position);
-          if (*(int *)position <= 0 || *(int *)position > *(int *)counterPeoples) {
-            system("clear");
-            printf("\nPosição Inválida!\n");
-            return 1;
-          }
-
-          removedPeople = peoplesBuffer + ((*(int *)position) - 1) * (*(size_t *)peopleLenght);
-
-          memmove(removedPeople, removedPeople + (*(size_t *)peopleLenght), ((*(int *)counterPeoples) - (*(int *)position)) * (*(size_t *)peopleLenght));
-
-          (*(int *)counterPeoples)--;
-
-          tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize - (*(size_t *)peopleLenght) - sizeof(int));
-          if (tempBuffer == NULL) {
-            printf("\nErro ao alocar memória! 2.2\n");
-            free(pBuffer);
-            return 1;
-          }
-
-          pBuffer = tempBuffer;
-          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
-          endBuffer = pBuffer + (*(size_t *)bufferSize) - (*(size_t *)peopleLenght) - sizeof(int);
-          *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
-
-          system("clear");
-          printf("\nRegistro removido com sucesso!\n");
-
-        } else {
-          system("clear");
-          printf("\nAgenda Vazia!\n");
-        }
-
-        break;
-      }
-      case 3: {
-        tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + 50 * sizeof(char) + sizeof(int) + sizeof(size_t));
-        if (tempBuffer == NULL) {
-          printf("\nErro ao alocar memória! 3.1\n");
-          free(pBuffer);
-          return 1;
-        }
-
-        pBuffer = tempBuffer;
-        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
-        endBuffer = pBuffer + (*(size_t *)bufferSize) + 50 * sizeof(char) + sizeof(int) + sizeof(size_t);
-        *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
-
-        offset = endBuffer - sizeof(size_t);
-        searchName = endBuffer - sizeof(size_t) - sizeof(int) - sizeof(char) * 50;
+        memcpy(currentPerson, age, sizeof(int));
+        // printf("Idade: %d\n", *(int *)currentPerson);
+        currentPerson += sizeof(int);
 
         system("clear");
         printf("\n-------------- Buscar Pessoa --------------\n");
