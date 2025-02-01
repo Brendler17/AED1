@@ -12,41 +12,16 @@ void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, vo
   *age = *pBuffer + 2 * sizeof(int) + sizeof(size_t) + 100 * sizeof(char);
   }
 
-  *pBuffer = tempBuffer;
-  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
-  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) + sizeof(size_t);
-  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
+void getCurrentPerson(void **userOption, void **counterPeoples, void **peoplesBuffer, void **currentPerson, void **name, void **email, void **counter) {
+  *currentPerson = *peoplesBuffer;
 
-  if (*(int *)*(userOption) == 1) {
-    *people = *peoplesBuffer + (*((int *)*(counterPeoples)) - 1) * (*((size_t *)*(peopleLenght)));
-  }
+  // if (*(int *)*(userOption) == 1) {
+  *currentPerson += ((*(int *)*(counterPeoples)) - 1) * ((strlen((char *)*(name)) + 1) * sizeof(char) + (strlen((char *)*(email)) + 1) * sizeof(char) + sizeof(int));
+  //}
 
-  *offset = *endBuffer - sizeof(size_t) - sizeof(size_t);
-  string = *pBuffer + (*(size_t *)*(offset));
-  len = *endBuffer - sizeof(size_t);
-
-  if (string != NULL && strlen((char *)string) > 0) {
-    *(size_t *)len = strlen((char *)string);
-    if (*(size_t *)len > 0 && ((char *)string)[(*(size_t *)len) - 1] == '\n') {
-      ((char *)string)[(*(size_t *)len) - 1] = '\0';
-    }
-  }
-
-  tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) - sizeof(size_t));
-  if (tempBuffer == NULL) {
-    return 1;
-  }
-
-  *pBuffer = tempBuffer;
-  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
-  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) - sizeof(size_t);
-  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
-
-  if (*(int *)*(userOption) == 1) {
-    *people = *peoplesBuffer + (*((int *)*(counterPeoples)) - 1) * (*((size_t *)*(peopleLenght)));
-  }
-
-  return 0;
+  // else if (*(int *)*(userOption) == 4) {
+  //   *currentPerson += (*(int *)*(counter)) * ((strlen((char *)*(name)) + 1) * sizeof(char) + (strlen((char *)*(email)) + 1) * sizeof(char) + sizeof(int));
+  // }
 }
 
 void showMenu() {
