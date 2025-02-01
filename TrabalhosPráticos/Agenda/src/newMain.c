@@ -61,9 +61,11 @@ int main(int argc, char const *argv[]) {
         system("clear");
         printf("\n-------------- Adicionar Pessoa --------------\n");
         printf("Informe o nome: ");
-        scanf("%[^\n]", (char *)name);
+        scanf(" %50[^\n]", (char *)name);
+        getchar();
         printf("Informe o e-mail: ");
-        scanf("%[^\n]", (char *)email);
+        scanf(" %50[^\n]", (char *)email);
+        getchar();
         printf("Informe a idade: ");
         scanf("%d", (int *)age);
 
