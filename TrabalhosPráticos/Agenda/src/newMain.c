@@ -2,25 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, void **name, void **email, void **age, void **bufferSize, void **peoplesBuffer) {
+void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, void **bufferSize, void **peoplesBuffer, void **name, void **email, void **age) {
   *userOption = *pBuffer;
   *counterPeoples = *pBuffer + sizeof(int);
-  *bufferSize = *pBuffer + sizeof(int) * 2;
-  *name = *pBuffer + sizeof(int) * 2 + sizeof(size_t);
-  *email = *pBuffer + sizeof(int) * 2 + sizeof(size_t) + 50 * sizeof(char);
-  *age = *pBuffer + sizeof(int) * 2 + sizeof(size_t) + 100 * sizeof(char);
-
-  if (*(int *)*(counterPeoples) > 0) {
+  *bufferSize = *pBuffer + 2 * sizeof(int);
     *peoplesBuffer = *pBuffer + sizeof(int) * 3 + sizeof(size_t) + 100 * sizeof(char);
-  }
-}
-
-int removeTrailingNewLine(void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **bufferSize, void **offset, void **people) {
-  void *len, *string;
-
-  void *tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) + sizeof(size_t));
-  if (tempBuffer == NULL) {
-    return 1;
+  *name = *pBuffer + 2 * sizeof(int) + sizeof(size_t);
+  *email = *pBuffer + 2 * sizeof(int) + sizeof(size_t) + 50 * sizeof(char);
+  *age = *pBuffer + 2 * sizeof(int) + sizeof(size_t) + 100 * sizeof(char);
   }
 
   *pBuffer = tempBuffer;
