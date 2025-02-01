@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
     return 1;
   }
 
-  updatePointers(&pBuffer, &userOption, &counterPeoples, &name, &email, &age, &bufferSize, &peoplesBuffer);
+  updatePointers(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age);
   endBuffer = pBuffer + 3 * sizeof(int) + sizeof(size_t) + 100 * sizeof(char);
 
   *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
@@ -78,8 +78,8 @@ int main(int argc, char const *argv[]) {
 
         pBuffer = tempBuffer;
         tempBuffer = NULL;
-        updatePointers(&pBuffer, &userOption, &counterPeoples, &name, &email, &age, &bufferSize, &peoplesBuffer);
-        endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof(strlen(name)) + sizeof(strlen(email)) + sizeof(int);
+        updatePointers(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age);
+        endBuffer = pBuffer + (*(size_t *)bufferSize) + (strlen(name) + 1) * sizeof(char) + (strlen(email) + 1) * sizeof(char) + sizeof(int);
         *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
                 break;
@@ -234,7 +234,8 @@ int main(int argc, char const *argv[]) {
           }
 
           pBuffer = tempBuffer;
-          updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peopleLenght);
+          tempBuffer = NULL;
+          updatePointers(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age);
           endBuffer = pBuffer + (*(size_t *)bufferSize) - sizeof(int);
           *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
