@@ -6,11 +6,11 @@ void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, vo
   *userOption = *pBuffer;
   *counterPeoples = *pBuffer + sizeof(int);
   *bufferSize = *pBuffer + 2 * sizeof(int);
-    *peoplesBuffer = *pBuffer + sizeof(int) * 3 + sizeof(size_t) + 100 * sizeof(char);
+  *peoplesBuffer = *pBuffer + sizeof(int) * 3 + sizeof(size_t) + 100 * sizeof(char);
   *name = *pBuffer + 2 * sizeof(int) + sizeof(size_t);
   *email = *pBuffer + 2 * sizeof(int) + sizeof(size_t) + 50 * sizeof(char);
   *age = *pBuffer + 2 * sizeof(int) + sizeof(size_t) + 100 * sizeof(char);
-  }
+}
 
 void getCurrentPerson(void **userOption, void **counterPeoples, void **peoplesBuffer, void **currentPerson, void **name, void **email, void **counter) {
   *currentPerson = *peoplesBuffer;
@@ -49,6 +49,8 @@ int main(int argc, char const *argv[]) {
   *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
   *(int *)counterPeoples = 0;
 
+  // printf("\nBufferSize Inicial: %zu\n", *(size_t *)bufferSize);
+
   do {
     showMenu();
     printf("Digite uma opção: ");
@@ -69,7 +71,9 @@ int main(int argc, char const *argv[]) {
         printf("Informe a idade: ");
         scanf("%d", (int *)age);
 
-        tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + sizeof(strlen(name)) + sizeof(strlen(email)) + sizeof(int));
+        // printf("\nIdade: %d\n", *(int *)age);
+
+        tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize + (strlen((char *)name) + 1) * sizeof(char) + (strlen((char *)email) + 1) * sizeof(char) + sizeof(int));
         if (tempBuffer == NULL) {
           printf("\nErro ao alocar memória!\n");
           free(pBuffer);
@@ -97,48 +101,7 @@ int main(int argc, char const *argv[]) {
         currentPerson += sizeof(int);
 
         system("clear");
-        printf("\n-------------- Buscar Pessoa --------------\n");
-        printf("Digite o nome que deseja buscar: ");
-        fgets(searchName, 50 * sizeof(char), stdin);
-        *(size_t *)offset = (size_t)(searchName - pBuffer);
-
-        if (removeTrailingNewLine(&pBuffer, &counterPeoples, &peopleLenght, &userOption, &peoplesBuffer, &endBuffer, &bufferSize, &offset, &people)) {
-          printf("\nErro ao alocar memória! 3.2\n");
-          free(pBuffer);
-          return 1;
-        }
-
-        counter = endBuffer - sizeof(size_t) - sizeof(int);
-        searchName = endBuffer - sizeof(size_t) - sizeof(int) - sizeof(char) * 50;
-
-        for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
-          people = peoplesBuffer + (*(int *)counter) * (*(size_t *)peopleLenght);
-
-          if (strcmp(people, searchName) == 0) {
-            system("clear");
-            printf("\n----------- Registro Encontrado -----------\n");
-            printf("Nome: %s\n", (char *)people);
-            printf("Idade: %d\n", *(int *)(people + 50 * sizeof(char)));
-            printf("E-Mail: %s\n", (char *)(people + 50 * sizeof(char) + sizeof(int)));
-            printf("----------------------------------------------\n");
-            break;
-          } else {
-            system("clear");
-            printf("\nRegistro não encontrado!\n");
-          }
-        }
-
-        tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize - 50 * sizeof(char) - sizeof(int) - sizeof(size_t));
-        if (tempBuffer == NULL) {
-          printf("\nErro ao alocar memória! 3.3\n");
-          free(pBuffer);
-          return 1;
-        }
-
-        pBuffer = tempBuffer;
-        updatePointers(&pBuffer, &userOption, &counterPeoples, &peopleLenght, &bufferSize, &peoplesBuffer);
-        endBuffer = pBuffer + (*(size_t *)bufferSize) - 50 * sizeof(char) - sizeof(int) - sizeof(size_t);
-        *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+        printf("\nRegistro adicionado com sucesso!\n");
 
         break;
       }
