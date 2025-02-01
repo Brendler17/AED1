@@ -35,7 +35,7 @@ void showMenu() {
 }
 
 int main(int argc, char const *argv[]) {
-  void *pBuffer, *endBuffer, *bufferSize, *tempBuffer, *userOption, *counterPeoples, *name, *email, *age, *peoplesBuffer, *endPeopleBuffer;
+  void *pBuffer, *endBuffer, *bufferSize, *tempBuffer, *userOption, *counterPeoples, *peoplesBuffer, *currentPerson, *name, *email, *age, *counter;
 
   pBuffer = (void *)malloc(3 * sizeof(int) + sizeof(size_t) + 100 * sizeof(char));
   if (pBuffer == NULL) {
