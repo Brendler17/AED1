@@ -155,9 +155,26 @@ int main(int argc, char const *argv[]) {
           system("clear");
           printf("\n-------------- Buscar Pessoa --------------\n");
 
+          currentPerson = NULL;
+
           if (getPerson(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &currentPerson, &name, &email, &age)) {
             free(pBuffer);
             return 1;
+          }
+
+          if (currentPerson != NULL) {
+            system("clear");
+            printf("\n----------- Registro Encontrado -----------\n");
+            printf("Nome: %s\n", (char *)currentPerson);
+            currentPerson += (strlen((char *)currentPerson) + 1) * sizeof(char);
+            printf("E-Mail: %s\n", (char *)currentPerson);
+            currentPerson += (strlen((char *)currentPerson) + 1) * sizeof(char);
+            printf("Idade: %d\n", *(int *)currentPerson);
+            currentPerson += sizeof(int);
+            printf("-------------------------------------------\n");
+          } else {
+            system("clear");
+            printf("\nRegistro Não Encontrado!\n");
           }
 
         } else {
@@ -273,7 +290,8 @@ int getPerson(void **pBuffer, void **userOption, void **counterPeoples, void **b
       *(int *)offset += sizeof(int);
     }
   } else if (*(int *)*(userOption) == 2) {
-    *(int *)*(counterPeoples) == 1 ? printf("\nDigite o nº de registro para remover (1): ") : printf("Digite o nº de registro para remover (1 a %d): ", *(int *)*(counterPeoples));
+    *(int *)*(counterPeoples) == 1 ? printf("\nDigite o nº de registro para remover (1): ") : printf("\nDigite o nº de registro para remover (1 a %d): ", *(int *)*(counterPeoples));
+
     scanf("%d", (int *)position);
     if (*(int *)position <= 0 || *(int *)position > *(int *)*(counterPeoples)) {
       system("clear");
@@ -294,14 +312,6 @@ int getPerson(void **pBuffer, void **userOption, void **counterPeoples, void **b
     for (*(int *)counter = 0; *(int *)counter < *(int *)*(counterPeoples); (*(int *)counter)++) {
       if (strcmp((char *)(*peoplesBuffer + *(int *)offset), (char *)name) == 0) {
         *currentPerson = *peoplesBuffer + *(int *)offset;
-        printf("\n----------- Registro Encontrado -----------\n");
-        printf("Nome: %s\n", (char *)*currentPerson);
-        *currentPerson += (strlen((char *)*currentPerson) + 1) * sizeof(char);
-        printf("E-Mail: %s\n", (char *)*currentPerson);
-        *currentPerson += (strlen((char *)*currentPerson) + 1) * sizeof(char);
-        printf("Idade: %d\n", *(int *)*currentPerson);
-        *currentPerson += sizeof(int);
-        printf("-------------------------------------------\n");
         return 0;
       }
       *(int *)offset += strlen((char *)(*peoplesBuffer) + *(int *)offset) + 1;
@@ -309,7 +319,8 @@ int getPerson(void **pBuffer, void **userOption, void **counterPeoples, void **b
       *(int *)offset += sizeof(int);
     }
 
-    printf("\nRegistro não encontrado!\n");
+    *currentPerson = NULL;
+    return 0;
   }
 
   tempBuffer = (void *)realloc(*pBuffer, (*(size_t *)*(bufferSize)) - 2 * sizeof(int));
