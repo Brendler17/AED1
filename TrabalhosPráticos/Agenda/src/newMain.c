@@ -12,18 +12,52 @@ void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, vo
   *age = *pBuffer + 2 * sizeof(int) + sizeof(size_t) + 100 * sizeof(char);
 }
 
-void getCurrentPerson(void **userOption, void **counterPeoples, void **peoplesBuffer, void **currentPerson, void **name, void **email, void **counter) {
-  *currentPerson = *peoplesBuffer;
+int getCurrentPerson(void **pBuffer, void **userOption, void **counterPeoples, void **bufferSize, void **peoplesBuffer, void **currentPerson, void **name, void **email, void **age) {
+  void *tempBuffer, *endBuffer, *counter, *offset;
 
-  // TESTE MESA
-  *currentPerson += ((*(int *)*(counterPeoples)) - 1) * ((strlen((char *)(*name)) + 1) * sizeof(char) + (strlen((char *)(*email)) + 1) * sizeof(char) + sizeof(int));
+  tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) + sizeof(int));
+  if (tempBuffer == NULL) {
+    printf("\nErro ao alocar memória!\n");
+    return 1;
+  }
 
-  // if (*(int *)*(userOption) == 1) {
-  //}
+  *pBuffer = tempBuffer;
+  tempBuffer = NULL;
+  updatePointers(pBuffer, userOption, counterPeoples, bufferSize, peoplesBuffer, name, email, age);
+  endBuffer = *pBuffer + (*(size_t *)*(bufferSize)) + sizeof(int);
+  *(size_t *)*(bufferSize) = (size_t)(endBuffer - *pBuffer);
 
-  // else if (*(int *)*(userOption) == 4) {
-  //   *currentPerson += (*(int *)*(counter)) * ((strlen((char *)*(name)) + 1) * sizeof(char) + (strlen((char *)*(email)) + 1) * sizeof(char) + sizeof(int));
-  // }
+  counter = endBuffer - sizeof(int);
+  offset = *age;
+
+  if (*(int *)*(counterPeoples) == 0) {
+    *currentPerson = NULL;
+    return 1;
+  }
+
+  *(int *)offset = 0;
+  for (*(int *)counter = 0; *(int *)counter < (*(int *)*(counterPeoples)-1); (*(int *)counter)++) {
+    *(int *)offset += strlen((char *)(*peoplesBuffer) + *(int *)offset) + 1;
+    *(int *)offset += strlen((char *)(*peoplesBuffer) + *(int *)offset) + 1;
+    *(int *)offset += sizeof(int);
+  }
+
+  tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) - sizeof(int));
+  if (tempBuffer == NULL) {
+    printf("\nErro ao alocar memória!\n");
+    return 1;
+  }
+
+  *pBuffer = tempBuffer;
+  tempBuffer = NULL;
+  updatePointers(pBuffer, userOption, counterPeoples, bufferSize, peoplesBuffer, name, email, age);
+  endBuffer = *pBuffer + (*(size_t *)*(bufferSize)) - sizeof(int);
+  *(size_t *)*(bufferSize) = (size_t)(endBuffer - *pBuffer);
+
+  offset = *age;
+  *currentPerson = *peoplesBuffer + *(int *)offset;
+
+  return 0;
 }
 
 void showMenu() {
@@ -70,8 +104,6 @@ int main(int argc, char const *argv[]) {
         printf("Informe o e-mail: ");
         scanf(" %50[^\n]", (char *)email);
         getchar();
-        printf("Informe a idade: ");
-        scanf("%d", (int *)age);
 
         // printf("\nIdade: %d\n", *(int *)age);
 
@@ -89,7 +121,9 @@ int main(int argc, char const *argv[]) {
         *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
         printf("\nBufferSize ao adicionar pessoa: %zu\n", *(size_t *)bufferSize);
 
-        getCurrentPerson(&userOption, &counterPeoples, &peoplesBuffer, &currentPerson, &name, &email, &counter);
+        getCurrentPerson(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &currentPerson, &name, &email, &age);
+        printf("Informe a idade: ");
+        scanf("%d", (int *)age);
         memcpy(currentPerson, name, (strlen(name) + 1) * sizeof(char));
         printf("Nome: %s\n", (char *)currentPerson);
         currentPerson += (strlen(name) + 1) * sizeof(char);
@@ -129,8 +163,6 @@ int main(int argc, char const *argv[]) {
           printf("\n--------------- Listar Agenda ---------------\n");
           currentPerson = peoplesBuffer;
           for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
-            // getCurrentPerson(&userOption, &counterPeoples, &peoplesBuffer, &currentPerson, &name, &email, &counter);
-
             printf("Nome: %s\n", (char *)currentPerson);
             currentPerson += (strlen(currentPerson) + 1) * sizeof(char);
             printf("E-Mail: %s\n", (char *)currentPerson);

@@ -2,68 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, void **peopleLenght, void **bufferSize, void **peoplesBuffer) {
-  *userOption = *pBuffer;
-  *counterPeoples = *pBuffer + sizeof(int);
-  *peopleLenght = *pBuffer + sizeof(int) + sizeof(int);
-  *bufferSize = *pBuffer + sizeof(int) + sizeof(int) + sizeof(size_t);
-  *peoplesBuffer = *pBuffer + 2 * sizeof(int) + 2 * sizeof(size_t);
-}
-
-int removeTrailingNewLine(void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **bufferSize, void **offset, void **people) {
-  void *len, *string;
-
-  void *tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) + sizeof(size_t));
-  if (tempBuffer == NULL) {
-    return 1;
-  }
-
-  *pBuffer = tempBuffer;
-  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
-  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) + sizeof(size_t);
-  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
-
-  if (*(int *)*(userOption) == 1) {
-    *people = *peoplesBuffer + (*((int *)*(counterPeoples)) - 1) * (*((size_t *)*(peopleLenght)));
-  }
-
-  *offset = *endBuffer - sizeof(size_t) - sizeof(size_t);
-  string = *pBuffer + (*(size_t *)*(offset));
-  len = *endBuffer - sizeof(size_t);
-
-  if (string != NULL && strlen((char *)string) > 0) {
-    *(size_t *)len = strlen((char *)string);
-    if (*(size_t *)len > 0 && ((char *)string)[(*(size_t *)len) - 1] == '\n') {
-      ((char *)string)[(*(size_t *)len) - 1] = '\0';
-    }
-  }
-
-  tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) - sizeof(size_t));
-  if (tempBuffer == NULL) {
-    return 1;
-  }
-
-  *pBuffer = tempBuffer;
-  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
-  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) - sizeof(size_t);
-  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
-
-  if (*(int *)*(userOption) == 1) {
-    *people = *peoplesBuffer + (*((int *)*(counterPeoples)) - 1) * (*((size_t *)*(peopleLenght)));
-  }
-
-  return 0;
-}
-
-void showMenu() {
-  printf("\n-------------------- MENU --------------------\n");
-  printf("1 - Adicionar Pessoa (Nome, Idade, E-Mail)\n");
-  printf("2 - Remover Pessoa\n");
-  printf("3 - Buscar Pessoa\n");
-  printf("4 - Listar Todos\n");
-  printf("5 - Sair\n");
-  printf("----------------------------------------------\n");
-}
+int removeTrailingNewLine(void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **bufferSize, void **offset, void **people);
+void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, void **peopleLenght, void **bufferSize, void **peoplesBuffer);
+void showMenu();
 
 int main(int argc, char const *argv[]) {
   void *pBuffer, *endBuffer, *bufferSize, *tempBuffer, *userOption, *counterPeoples, *peopleLenght, *peoplesBuffer, *people, *searchName, *position, *removedPeople, *counter, *offset;
@@ -326,4 +267,67 @@ int main(int argc, char const *argv[]) {
   free(pBuffer);
 
   return 0;
+}
+
+void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, void **peopleLenght, void **bufferSize, void **peoplesBuffer) {
+  *userOption = *pBuffer;
+  *counterPeoples = *pBuffer + sizeof(int);
+  *peopleLenght = *pBuffer + sizeof(int) + sizeof(int);
+  *bufferSize = *pBuffer + sizeof(int) + sizeof(int) + sizeof(size_t);
+  *peoplesBuffer = *pBuffer + 2 * sizeof(int) + 2 * sizeof(size_t);
+}
+
+int removeTrailingNewLine(void **pBuffer, void **counterPeoples, void **peopleLenght, void **userOption, void **peoplesBuffer, void **endBuffer, void **bufferSize, void **offset, void **people) {
+  void *len, *string;
+
+  void *tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) + sizeof(size_t));
+  if (tempBuffer == NULL) {
+    return 1;
+  }
+
+  *pBuffer = tempBuffer;
+  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
+  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) + sizeof(size_t);
+  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
+
+  if (*(int *)*(userOption) == 1) {
+    *people = *peoplesBuffer + (*((int *)*(counterPeoples)) - 1) * (*((size_t *)*(peopleLenght)));
+  }
+
+  *offset = *endBuffer - sizeof(size_t) - sizeof(size_t);
+  string = *pBuffer + (*(size_t *)*(offset));
+  len = *endBuffer - sizeof(size_t);
+
+  if (string != NULL && strlen((char *)string) > 0) {
+    *(size_t *)len = strlen((char *)string);
+    if (*(size_t *)len > 0 && ((char *)string)[(*(size_t *)len) - 1] == '\n') {
+      ((char *)string)[(*(size_t *)len) - 1] = '\0';
+    }
+  }
+
+  tempBuffer = (void *)realloc(*pBuffer, *(size_t *)*(bufferSize) - sizeof(size_t));
+  if (tempBuffer == NULL) {
+    return 1;
+  }
+
+  *pBuffer = tempBuffer;
+  updatePointers(pBuffer, userOption, counterPeoples, peopleLenght, bufferSize, peoplesBuffer);
+  *endBuffer = *pBuffer + *(size_t *)*(bufferSize) - sizeof(size_t);
+  *(size_t *)*(bufferSize) = (size_t)(*endBuffer - *pBuffer);
+
+  if (*(int *)*(userOption) == 1) {
+    *people = *peoplesBuffer + (*((int *)*(counterPeoples)) - 1) * (*((size_t *)*(peopleLenght)));
+  }
+
+  return 0;
+}
+
+void showMenu() {
+  printf("\n-------------------- MENU --------------------\n");
+  printf("1 - Adicionar Pessoa (Nome, Idade, E-Mail)\n");
+  printf("2 - Remover Pessoa\n");
+  printf("3 - Buscar Pessoa\n");
+  printf("4 - Listar Todos\n");
+  printf("5 - Sair\n");
+  printf("----------------------------------------------\n");
 }
