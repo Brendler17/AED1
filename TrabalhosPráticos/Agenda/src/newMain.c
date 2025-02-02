@@ -15,8 +15,10 @@ void updatePointers(void **pBuffer, void **userOption, void **counterPeoples, vo
 void getCurrentPerson(void **userOption, void **counterPeoples, void **peoplesBuffer, void **currentPerson, void **name, void **email, void **counter) {
   *currentPerson = *peoplesBuffer;
 
+  // TESTE MESA
+  *currentPerson += ((*(int *)*(counterPeoples)) - 1) * ((strlen((char *)(*name)) + 1) * sizeof(char) + (strlen((char *)(*email)) + 1) * sizeof(char) + sizeof(int));
+
   // if (*(int *)*(userOption) == 1) {
-  *currentPerson += ((*(int *)*(counterPeoples)) - 1) * ((strlen((char *)*(name)) + 1) * sizeof(char) + (strlen((char *)*(email)) + 1) * sizeof(char) + sizeof(int));
   //}
 
   // else if (*(int *)*(userOption) == 4) {
@@ -60,7 +62,7 @@ int main(int argc, char const *argv[]) {
     switch (*(int *)userOption) {
       case 1: {
         (*(int *)counterPeoples)++;
-        system("clear");
+        // system("clear");
         printf("\n-------------- Adicionar Pessoa --------------\n");
         printf("Informe o nome: ");
         scanf(" %50[^\n]", (char *)name);
@@ -85,22 +87,22 @@ int main(int argc, char const *argv[]) {
         updatePointers(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age);
         endBuffer = pBuffer + (*(size_t *)bufferSize) + (strlen(name) + 1) * sizeof(char) + (strlen(email) + 1) * sizeof(char) + sizeof(int);
         *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
-        // printf("\nBufferSize ao adicionar pessoa: %zu\n", *(size_t *)bufferSize);
+        printf("\nBufferSize ao adicionar pessoa: %zu\n", *(size_t *)bufferSize);
 
         getCurrentPerson(&userOption, &counterPeoples, &peoplesBuffer, &currentPerson, &name, &email, &counter);
         memcpy(currentPerson, name, (strlen(name) + 1) * sizeof(char));
-        // printf("Nome: %s\n", (char *)currentPerson);
+        printf("Nome: %s\n", (char *)currentPerson);
         currentPerson += (strlen(name) + 1) * sizeof(char);
 
         memcpy(currentPerson, email, (strlen(email) + 1) * sizeof(char));
-        // printf("E-Mail: %s\n", (char *)currentPerson);
+        printf("E-Mail: %s\n", (char *)currentPerson);
         currentPerson += (strlen(email) + 1) * sizeof(char);
 
         memcpy(currentPerson, age, sizeof(int));
-        // printf("Idade: %d\n", *(int *)currentPerson);
+        printf("Idade: %d\n", *(int *)currentPerson);
         currentPerson += sizeof(int);
 
-        system("clear");
+        // system("clear");
         printf("\nRegistro adicionado com sucesso!\n");
 
         break;
@@ -119,10 +121,11 @@ int main(int argc, char const *argv[]) {
           updatePointers(&pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age);
           endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof(int);
           *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
+          printf("\nBufferSize ao listar pessoa: %zu\n", *(size_t *)bufferSize);
 
           counter = endBuffer - sizeof(int);
 
-          system("clear");
+          // system("clear");
           printf("\n--------------- Listar Agenda ---------------\n");
           currentPerson = peoplesBuffer;
           for (*(int *)counter = 0; *(int *)counter < *(int *)counterPeoples; (*(int *)counter)++) {
@@ -136,6 +139,7 @@ int main(int argc, char const *argv[]) {
             currentPerson += sizeof(int);
             printf("----------------------------------------------\n");
           }
+          currentPerson = NULL;
 
           tempBuffer = (void *)realloc(pBuffer, *(size_t *)bufferSize - sizeof(int));
           if (tempBuffer == NULL) {
@@ -151,7 +155,7 @@ int main(int argc, char const *argv[]) {
           *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
         } else {
-          system("clear");
+          // system("clear");
           printf("\nAgenda Vazia!\n");
         }
 
