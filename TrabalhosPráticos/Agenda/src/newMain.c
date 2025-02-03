@@ -138,7 +138,7 @@ int main( int argc, char const *argv[] ) {
 		getchar();
 
 		switch ( *(int *)userOption ) {
-            // Adiciona um novo registro ao buffer
+			// Adiciona um novo registro ao buffer
 			case 1: {
 				(*(int *)counterPeoples)++;
 				system( "clear" );
@@ -184,7 +184,7 @@ int main( int argc, char const *argv[] ) {
 				break;
 			}
 			// Remove um registro do buffer através de index
-            case 2: {
+			case 2: {
 				if ( *(int *)counterPeoples != 0 ) {
 					tempBuffer = realloc( pBuffer, *(size_t *)bufferSize + sizeof( int ) );
 					if ( tempBuffer == NULL ) {
@@ -247,9 +247,9 @@ int main( int argc, char const *argv[] ) {
 					printf( "\nAgenda Vazia!\n" );
 				}
 				break;
-            }
+			}
 			// Buscar um registro através do campo "name"
-            case 3: {
+			case 3: {
 				if ( *(int *)counterPeoples != 0 ) {
 					system( "clear" );
 					printf( "\n-------------- Buscar Pessoa --------------\n" );
@@ -280,8 +280,8 @@ int main( int argc, char const *argv[] ) {
 				}
 				break;
 			}
-            // Listar todos os registros do buffer
-            case 4: {
+			// Listar todos os registros do buffer
+			case 4: {
 				if ( *(int *)counterPeoples != 0 ) {
 					tempBuffer = realloc( pBuffer, *(size_t *)bufferSize + sizeof( int ) );
 					if ( tempBuffer == NULL ) {
@@ -329,7 +329,7 @@ int main( int argc, char const *argv[] ) {
 				break;
 			}
 			// Saída do programa
-            case 5:
+			case 5:
 				printf( "\nSaindo...\n\n" );
 				break;
 			default:
