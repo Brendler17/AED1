@@ -45,10 +45,22 @@ void seatManagerFree(SeatManager* obj) {
 
 int main() {
   SeatManager* manager = seatManagerCreate(5);
+
+  // ✓
+  // printf("Reserve: %d\n", seatManagerReserve(manager));
+  // printf("Reserve: %d\n", seatManagerReserve(manager));
+  // seatManagerUnreserve(manager, 1);
+  // printf("Reserve: %d\n", seatManagerReserve(manager));
+  //
+
+  // X
   printf("Reserve: %d\n", seatManagerReserve(manager));
   printf("Reserve: %d\n", seatManagerReserve(manager));
   seatManagerUnreserve(manager, 1);
+  seatManagerUnreserve(manager, 2);
   printf("Reserve: %d\n", seatManagerReserve(manager));
+  //
+
   seatManagerFree(manager);
   return 0;
 }
