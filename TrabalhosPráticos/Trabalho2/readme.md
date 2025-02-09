@@ -2,19 +2,19 @@
 <h2 align="center"> Trabalho Prático 2 - Estrutura de Dados </h2>
 <br>
 
-<h3 align="center"> Reservation Manager</h3>
+<h3 align="justify"> Reservation Manager</h3>
 
 <p align="justify">
 Design a system that manages the reservation state of <b>n</b> seats that are numbered from <b>1</b> to <b>n</b>.
 <br>
 Implement the <b>SeatManager</b> class:
 <br>
-- <b>SeatManager(int n)</b> Initializes a <b>SeatManager</b> object that will manage <b>n</b> seats numbered from <b>1</b> to <b>n</b>. All seats are initially available.
-- <b>int reserve()</b> Fetches the smallest-numbered unreserved seat, reserves it, and returns its number.
-- <b>void unreserve(int seatNumber)</b> Unreserves the seat with the given <b>seatNumber</b>.
+- <b>SeatManager(int n)</b> Initializes a <b>SeatManager</b> object that will manage <b>n</b> seats numbered from <b>1</b> to <b>n</b>. All seats are initially available<br>
+- <b>int reserve()</b> Fetches the smallest-numbered unreserved seat, reserves it, and returns its number.<br>
+- <b>void unreserve(int seatNumber)</b> Unreserves the seat with the given <b>seatNumber</b>.<br>
 
 
-This problem was taken from <a href=https://leetcode.com/problems/seat-reservation-manager/description></a>
+This problem was taken from <a href=https://leetcode.com/problems/seat-reservation-manager/description/></a>
 </p>
 
 <br>
