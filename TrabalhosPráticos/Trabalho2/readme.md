@@ -14,7 +14,7 @@ Implement the <b>SeatManager</b> class:
 - <b>void unreserve(int seatNumber)</b> Unreserves the seat with the given <b>seatNumber</b>.<br>
 
 
-This problem was taken from <a href=https://leetcode.com/problems/seat-reservation-manager/description/></a>
+This problem was taken from <a href=https://leetcode.com/problems/seat-reservation-manager/description/ ></a>
 </p>
 
 <br>
