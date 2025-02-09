@@ -154,14 +154,35 @@ SeatManager_t *SeatManagerCreate( int n ) {
 	return seatManager;
 }
 
+/*
+====================
+SeatManagerReserve
+
+  Reserva e retorna o menor assento disponível
+====================
+*/
 int SeatManagerReserve( SeatManager_t *obj ) {
 	return Pop( &obj->heap );
 }
 
+/*
+====================
+SeatManagerUnreserve
+
+  Desreserva e devolve o assento para a heap
+====================
+*/
 void SeatManagerUnreserve( SeatManager_t *obj, int seatNumber ) {
 	Push( &obj->heap, seatNumber );
 }
 
+/*
+====================
+SeatManagerFree
+
+  Libera a memória da heap e do gerenciador
+====================
+*/
 void SeatManagerFree( SeatManager_t *obj ) {
 	free( obj->heap.elements );
 	free( obj );
