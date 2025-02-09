@@ -1,107 +1,171 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+====================
+Heap_t
+
+  Estrutura para representar uma minHeap
+====================
+*/
 typedef struct {
-  int* elements;
-  int size;
-  int capacity;
-} Heap;
+	int *elements;
+	int size;
+	int capacity;
+} Heap_t;
 
+/*
+====================
+SeatManager_t
+
+  Estrutura para gerenciar assentos utilizando uma minHeap
+====================
+*/
 typedef struct {
-  Heap heap;
-} SeatManager;
+	Heap_t heap;
+} SeatManager_t;
 
-void swap(int* a, int* b) {
-  int temp = *a;
-  *a = *b;
-  *b = temp;
+/*
+====================
+Swap
+
+  Troca dois valores inteiros de posição
+====================
+*/
+void Swap( int *a, int *b ) {
+	int temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
-void minHeapify(Heap* heap, int index) {
-  int smallest = index;
-  int left = 2 * index + 1;
-  int right = 2 * index + 2;
+/*
+====================
+MinHeapify
 
-  if (left < heap->size && heap->elements[left] < heap->elements[smallest]) {
-    smallest = left;
-  }
-  if (right < heap->size && heap->elements[right] < heap->elements[smallest]) {
-    smallest = right;
-  }
+  Garante a propriedade da minHeap
+====================
+*/
+void MinHeapify( Heap_t *heap, int index ) {
+	int smallest = index;
+	int left = 2 * index + 1;
+	int right = 2 * index + 2;
 
-  if (smallest != index) {
-    swap(&heap->elements[smallest], &heap->elements[index]);
-    minHeapify(heap, smallest);
-  }
+	if ( left < heap->size && heap->elements[left] < heap->elements[smallest] ) {
+		smallest = left;
+	}
+	if ( right < heap->size && heap->elements[right] < heap->elements[smallest] ) {
+		smallest = right;
+	}
+
+	if ( smallest != index ) {
+		Swap( &heap->elements[smallest], &heap->elements[index] );
+		MinHeapify( heap, smallest );
+	}
 }
 
-int full(Heap* heap) { return heap->size == heap->capacity; }
-
-int empty(Heap* heap) { return heap->size == 0; }
-
-void push(Heap* heap, int value) {
-  if (full(heap)) {
-    printf("\nHeap Cheia!\n");
-    return;
-  }
-
-  int position = heap->size;
-  heap->size++;
-  heap->elements[position] = value;
-
-  while (position > 0 && heap->elements[(position - 1) / 2] > heap->elements[position]) {
-    swap(&heap->elements[position], &heap->elements[(position - 1) / 2]);
-    position = (position - 1) / 2;
-  }
+int IsFull( Heap_t *heap ) {
+	return heap->size == heap->capacity;
 }
 
-int pop(Heap* heap) {
-  if (empty(heap)) {
-    return -1;
-  }
-
-  int root = heap->elements[0];
-  heap->size--;
-  heap->elements[0] = heap->elements[heap->size];
-
-  minHeapify(heap, 0);
-
-  return root;
+int IsEmpty( Heap_t *heap ) {
+	return heap->size == 0;
 }
 
-SeatManager* seatManagerCreate(int n) {
-  SeatManager* seatManager = (SeatManager*)malloc(sizeof(SeatManager));
-  if (seatManager == NULL) {
-    printf("\nErro ao alocar memória!\n");
-    return NULL;
-  }
+/*
+====================
+Push
 
-  seatManager->heap.capacity = n;
-  seatManager->heap.size = 0;
-  seatManager->heap.elements = (int*)malloc(n * sizeof(int));
+  Insere um novo elemento na minHeap
+====================
+*/
+void Push( Heap_t *heap, int value ) {
+	if ( IsFull( heap ) ) {
+		printf( "\nHeap Cheia!\n" );
+		return;
+	}
 
-  for (int counter = 1; counter <= n; counter++) {
-    push(&seatManager->heap, counter);
-  }
+	int position = heap->size;
+	heap->size++;
+	heap->elements[position] = value;
 
-  return seatManager;
+	while ( position > 0 && heap->elements[( position - 1 ) / 2] > heap->elements[position] ) {
+		Swap( &heap->elements[position], &heap->elements[( position - 1 ) / 2] );
+		position = ( position - 1 ) / 2;
+	}
 }
 
-int seatManagerReserve(SeatManager* obj) { return pop(&obj->heap); }
+/*
+====================
+Pop
 
-void seatManagerUnreserve(SeatManager* obj, int seatNumber) { push(&obj->heap, seatNumber); }
+  Remove e retorna o menor elemento do heap
+====================
+*/
+int Pop( Heap_t *heap ) {
+	if ( IsEmpty( heap ) ) {
+		return -1;
+	}
 
-void seatManagerFree(SeatManager* obj) {
-  free(obj->heap.elements);
-  free(obj);
+	int root = heap->elements[0];
+	heap->size--;
+	heap->elements[0] = heap->elements[heap->size];
+
+	MinHeapify( heap, 0 );
+
+	return root;
 }
 
-int main() {
-  SeatManager* manager = seatManagerCreate(5);
-  printf("Reserve: %d\n", seatManagerReserve(manager));
-  printf("Reserve: %d\n", seatManagerReserve(manager));
-  seatManagerUnreserve(manager, 1);
-  printf("Reserve: %d\n", seatManagerReserve(manager));
-  seatManagerFree(manager);
-  return 0;
+/*
+====================
+SeatManagerCreate
+
+  Inicializa um gerenciador de assentos
+====================
+*/
+SeatManager_t *SeatManagerCreate( int n ) {
+	SeatManager_t *seatManager = (SeatManager_t *) malloc( sizeof( SeatManager_t ) );
+	if ( seatManager == NULL ) {
+		printf( "\nErro ao alocar memória!\n" );
+		return NULL;
+	}
+
+	seatManager->heap.capacity = n;
+	seatManager->heap.size = 0;
+	seatManager->heap.elements = (int *) malloc( n * sizeof( int ) );
+
+	for ( int counter = 1; counter <= n; counter++ ) {
+		Push( &seatManager->heap, counter );
+	}
+
+	return seatManager;
+}
+
+int SeatManagerReserve( SeatManager_t *obj ) {
+	return Pop( &obj->heap );
+}
+
+void SeatManagerUnreserve( SeatManager_t *obj, int seatNumber ) {
+	Push( &obj->heap, seatNumber );
+}
+
+void SeatManagerFree( SeatManager_t *obj ) {
+	free( obj->heap.elements );
+	free( obj );
+}
+
+/*
+====================
+Main
+
+  Testa a funcionalidade do gerenciador de assentos
+====================
+*/
+int main( void ) {
+	SeatManager_t *manager = SeatManagerCreate( 5 );
+	printf( "Reserve: %d\n", SeatManagerReserve( manager ) );
+	printf( "Reserve: %d\n", SeatManagerReserve( manager ) );
+	SeatManagerUnreserve( manager, 1 );
+	printf( "Reserve: %d\n", SeatManagerReserve( manager ) );
+	SeatManagerFree( manager );
+	return 0;
 }
