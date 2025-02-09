@@ -40,14 +40,13 @@ int full(Heap* heap) { return heap->size == heap->capacity; }
 int empty(Heap* heap) { return heap->size == 0; }
 
 void push(Heap* heap, int value) {
-  heap->size++;
   if (full(heap)) {
     printf("\nHeap Cheia!\n");
-    heap->size--;
     return;
   }
 
-  int position = heap->size - 1;
+  int position = heap->size;
+  heap->size++;
   heap->elements[position] = value;
 
   while (position > 0 && heap->elements[(position - 1) / 2] > heap->elements[position]) {
