@@ -63,10 +63,24 @@ void MinHeapify( Heap_t *heap, int index ) {
 	}
 }
 
+/*
+====================
+isFull
+
+  Retorna true se a minHeap estiver cheia
+====================
+*/
 int IsFull( Heap_t *heap ) {
 	return heap->size == heap->capacity;
 }
 
+/*
+====================
+isEmpty
+
+  Retorna true se a minHeap estiver vazia
+====================
+*/
 int IsEmpty( Heap_t *heap ) {
 	return heap->size == 0;
 }
