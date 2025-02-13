@@ -158,6 +158,4 @@ int main() {
 
   free(list);
   return 0;
-
-  return 0;
 }
