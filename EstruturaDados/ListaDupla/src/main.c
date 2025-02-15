@@ -125,12 +125,12 @@ bool pop(DoubleList *list, Data *data, int position) {
   } else if (position == 0) {  // Remover do inicio
     removedNode = list->pFirst;
     list->pFirst = removedNode->pNext;
-    removedNode->pNext->pPrev = NULL;          // ?
-  } else if (position >= list->nodeCounter) {  // Remover do final
+    list->pFirst->pPrev = NULL;
+  } else if (position >= list->nodeCounter - 1) {  // Remover do final
     removedNode = list->pLast;
     list->pLast = removedNode->pPrev;
-    removedNode->pPrev->pNext = NULL;  // ?
-  } else {                             // Remover do meio
+    list->pLast->pNext = NULL;
+  } else {  // Remover do meio
     removedNode = getCurrentNode(list, position);
     removedNode->pPrev->pNext = removedNode->pNext;
     removedNode->pNext->pPrev = removedNode->pPrev;
