@@ -4,5 +4,5 @@
 		"string.h": "c",
 		"stdlib.h": "c"
 	},
-	"editor.formatOnSave": false
+	"editor.formatOnSave": true
 }
