@@ -160,7 +160,48 @@ bool clear(DoubleList *list) {
 }
 
 int main(int argc, char const *argv[]) {
-  printf("Hello World!\n");
+  DoubleList *list;
 
+  if (!(reset(&list))) {
+    return 1;
+  }
+
+  Data data1 = {10}, data2 = {20}, data3 = {30}, data4 = {40}, data5 = {50};
+  Data removedData;
+
+  printf("==== Teste de Inserção ====\n");
+  push(list, &data1, 0);  // 10
+  push(list, &data2, 1);  // 10 20
+  push(list, &data3, 1);  // 10 30 20
+  push(list, &data4, 0);  // 40 10 30 20
+  push(list, &data5, 5);  // 40 10 30 20 50
+  printList(list);
+
+  printf("==== Teste de Remoção ====\n");
+  printf("Removendo 30\n");
+  pop(list, &removedData, 2);  // Remove 30
+  printList(list);             // 40 10 20 50
+
+  printf("Removendo 40\n");
+  pop(list, &removedData, 0);  // Remove 40
+  printList(list);             // 10 20 50
+
+  printf("Removendo 50\n");
+  pop(list, &removedData, 2);  // Remove 50
+  printList(list);             // 10 20
+
+  printf("Removendo 10\n");
+  pop(list, &removedData, 0);  // Remove 10
+  printList(list);             // 20
+
+  printf("Removendo 20\n");
+  pop(list, &removedData, 0);  // Remove 20 (Lista fica vazia)
+  printList(list);             // Lista vazia
+
+  printf("==== Teste de Lista Vazia ====");
+  pop(list, &removedData, 0);
+
+  clear(list);
+  free(list);
   return 0;
 }
