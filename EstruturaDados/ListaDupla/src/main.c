@@ -159,6 +159,17 @@ bool clear(DoubleList *list) {
   return true;
 }
 
+void printList(DoubleList *list) {
+  Node *currentNode = list->pFirst;
+
+  printf("List: ");
+  while (currentNode != NULL) {
+    printf("%d  ", currentNode->data.registration);
+    currentNode = currentNode->pNext;
+  }
+  printf("\n");
+}
+
 int main(int argc, char const *argv[]) {
   DoubleList *list;
 
