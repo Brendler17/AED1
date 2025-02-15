@@ -8,8 +8,8 @@ typedef struct {
 
 typedef struct Node {
   Data data;
-  Node *pNext;
-  Node *pPrev;
+  struct Node *pNext;
+  struct Node *pPrev;
 } Node;
 
 typedef struct {
