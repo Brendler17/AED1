@@ -69,6 +69,26 @@ void heapifyUp(minHeap *heap, Node *node) {
   }
 }
 
+void heapifyDown(minHeap *heap, Node *node) {
+  while (node->pLeft != NULL) {
+    Node *smallest = node->pLeft;
+
+    if (node->pRight != NULL && node->pRight->data.number < node->pLeft->data.number) {
+      smallest = node->pRight;
+    }
+
+    if (node->data.number <= smallest->data.number) {
+      break;
+    }
+
+    Data temp = node->data;
+    node->data = smallest->data;
+    smallest->data = temp;
+
+    node = smallest;
+  }
+}
+
 bool reset(minHeap **heap) {
   *heap = (minHeap *)malloc(sizeof(minHeap));
   if (*heap == NULL) {
@@ -110,7 +130,7 @@ bool push(minHeap *heap, Data *data) {
     parent->pRight = newNode;
   }
 
-  // heapifyUp(heap, newNode);
+  heapifyUp(heap, newNode);
 
   return true;
 }
