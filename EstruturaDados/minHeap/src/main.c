@@ -82,6 +82,8 @@ bool reset(minHeap **heap) {
   return true;
 }
 
+bool empty(minHeap *heap) { return heap->nodeCounter == 0; }
+
 bool push(minHeap *heap, Data *data) {
   Node *newNode = (Node *)malloc(sizeof(Node));
   if (newNode == NULL) {
@@ -109,6 +111,40 @@ bool push(minHeap *heap, Data *data) {
   }
 
   // heapifyUp(heap, newNode);
+
+  return true;
+}
+
+bool pop(minHeap *heap, Data *data) {
+  if (empty(heap)) {
+    printf("\nError! Empty List!\n");
+    return false;
+  }
+
+  *data = heap->pRoot->data;
+
+  if (heap->nodeCounter == 1) {
+    free(heap->pRoot);
+    heap->pRoot = NULL;
+    heap->nodeCounter = 0;
+  }
+
+  Node *lastParent = findParent(heap, heap->nodeCounter);
+  Node *lastNode;
+
+  if (lastParent->pRight != NULL) {
+    lastNode = lastParent->pRight;
+    lastParent->pRight = NULL;
+  } else {
+    lastNode = lastParent->pLeft;
+    lastParent->pLeft = NULL;
+  }
+
+  heap->pRoot->data = lastNode->data;
+  free(lastNode);
+  heap->nodeCounter--;
+
+  heapifyDown(heap, heap->pRoot);
 
   return true;
 }
