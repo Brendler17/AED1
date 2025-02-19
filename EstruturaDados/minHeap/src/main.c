@@ -196,6 +196,26 @@ bool clear(minHeap *heap) {
   return true;
 }
 
+void printHeapRecursive(Node *node, int depth) {
+  if (node == NULL) return;
+
+  for (int i = 0; i < depth; i++) printf("  ");  // Indentação visual
+  printf("%d\n", node->data.number);
+
+  printHeapRecursive(node->pLeft, depth + 1);
+  printHeapRecursive(node->pRight, depth + 1);
+}
+
+void printHeap(minHeap *heap) {
+  if (empty(heap)) {
+    printf("\nError! Empty Heap!\n");
+    return;
+  }
+  printf("Heap structure:\n");
+  printHeapRecursive(heap->pRoot, 0);
+  printf("\n");
+}
+
 int main() {
   minHeap *heap;
   Data removedData;
