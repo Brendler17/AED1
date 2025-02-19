@@ -19,4 +19,17 @@ typedef struct {
   size_t nodeCounter;
 } maxHeap;
 
+bool reset(maxHeap **heap) {
+  *heap = (maxHeap *)malloc(sizeof(maxHeap));
+  if (*heap == NULL) {
+    printf("\nError allocating memory!\n");
+    return false;
+  }
+
+  (*heap)->pRoot = NULL;
+  (*heap)->nodeCounter = 0;
+
+  return true;
+}
+
 int main() { return 0; }
