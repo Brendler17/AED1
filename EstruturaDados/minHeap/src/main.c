@@ -148,10 +148,18 @@ bool pop(minHeap *heap, Data *data) {
     free(heap->pRoot);
     heap->pRoot = NULL;
     heap->nodeCounter = 0;
+    return true;
   }
 
   Node *lastParent = findParent(heap, heap->nodeCounter);
   Node *lastNode;
+
+  if (lastParent == NULL) {
+    free(heap->pRoot);
+    heap->pRoot = NULL;
+    heap->nodeCounter = 0;
+    return true;
+  }
 
   if (lastParent->pRight != NULL) {
     lastNode = lastParent->pRight;
