@@ -34,6 +34,27 @@ int *convertNumberToBits(int number, size_t *size) {
   return bits;
 }
 
+Node *findParent(maxHeap *heap, int identifier) {
+  if (identifier == 1) return NULL;
+
+  size_t size;
+  int *idInBits = convertNumberToBits(identifier, &size);
+  if (idInBits == NULL) return NULL;
+
+  Node *parent = heap->pRoot;
+
+  for (int counter = 1; counter < size - 1; counter++) {
+    if (idInBits[counter] == 1) {
+      parent = parent->pRight;
+    } else {
+      parent = parent->pLeft;
+    }
+  }
+
+  free(idInBits);
+  return parent;
+}
+
 bool reset(maxHeap **heap) {
   *heap = (maxHeap *)malloc(sizeof(maxHeap));
   if (*heap == NULL) {
