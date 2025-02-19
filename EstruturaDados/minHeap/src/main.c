@@ -180,10 +180,33 @@ bool pop(minHeap *heap, Data *data) {
 
 int main() {
   minHeap *heap;
+  Data removedData;
 
   if (!reset(&heap)) {
     return 1;
   }
+
+  Data data1 = {7};
+  Data data2 = {5};
+  Data data3 = {3};
+  Data data4 = {4};
+  Data data5 = {6};
+
+  push(heap, &data1);
+  push(heap, &data2);
+  push(heap, &data3);
+  push(heap, &data4);
+  push(heap, &data5);
+
+  printHeap(heap);
+
+  pop(heap, &removedData);
+  printf("Removed: %d\n", removedData.number);
+  printHeap(heap);
+
+  clear(heap);
+  printHeap(heap);
+  free(heap);
 
   return 0;
 }
