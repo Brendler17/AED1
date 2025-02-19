@@ -32,6 +32,37 @@ bool reset(minHeap **heap) {
   return true;
 }
 
+bool push(minHeap *heap, Data *data) {
+  Node *newNode = (Node *)malloc(sizeof(Node));
+  if (newNode == NULL) {
+    printf("\nError allocating memory!\n");
+    return false;
+  }
+
+  newNode->identifier = heap->nodeCounter + 1;
+  newNode->data = *data;
+  newNode->pLeft = NULL;
+  newNode->pRight = NULL;
+
+  if (heap->nodeCounter == 0) {
+    heap->pRoot = newNode;
+    heap->nodeCounter++;
+    return true;
+  }
+
+  Node *parent = findParent(heap, newNode->identifier);
+
+  if (parent->pLeft == NULL) {
+    parent->pLeft = newNode;
+  } else {
+    parent->pRight = newNode;
+  }
+
+  // heapifyUp(heap, newNode);
+
+  return true;
+}
+
 int main() {
   minHeap *heap;
 
