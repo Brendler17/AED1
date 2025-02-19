@@ -55,6 +55,20 @@ Node *findParent(minHeap *heap, int identifier) {
   return parent;
 }
 
+void heapifyUp(minHeap *heap, Node *node) {
+  if (node == heap->pRoot) return;
+
+  Node *parent = findParent(heap, node->identifier);
+  while (parent != NULL && node->data.number < parent->data.number) {
+    Data temp = node->data;
+    node->data = parent->data;
+    parent->data = temp;
+
+    node = parent;
+    parent = findParent(heap, node->identifier);
+  }
+}
+
 bool reset(minHeap **heap) {
   *heap = (minHeap *)malloc(sizeof(minHeap));
   if (*heap == NULL) {
