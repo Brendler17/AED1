@@ -18,3 +18,26 @@ typedef struct {
   Node *pRoot;
   size_t nodeCounter;
 } minHeap;
+
+bool reset(minHeap **heap) {
+  *heap = (minHeap *)malloc(sizeof(minHeap));
+  if (*heap == NULL) {
+    printf("\nError allocating memory!\n");
+    return false;
+  }
+
+  (*heap)->pRoot = NULL;
+  (*heap)->nodeCounter = 0;
+
+  return true;
+}
+
+int main() {
+  minHeap *heap;
+
+  if (!reset(&heap)) {
+    return 1;
+  }
+
+  return 0;
+}
