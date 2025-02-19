@@ -132,6 +132,7 @@ bool push(minHeap *heap, Data *data) {
 
   heapifyUp(heap, newNode);
 
+  heap->nodeCounter++;
   return true;
 }
 
