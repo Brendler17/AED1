@@ -118,4 +118,43 @@ bool push(maxHeap *heap, Data *data) {
   return true;
 }
 
+bool empty(maxHeap *heap) { return heap->nodeCounter = 0; }
+
+bool pop(maxHeap *heap, Data *data) {
+  if (empty(heap)) {
+    printf("\nError! Empty Heap!\n");
+    return false;
+  }
+
+  *data = heap->pRoot->data;
+
+  if (heap->nodeCounter == 1) {
+    free(heap->pRoot);
+    heap->pRoot = NULL;
+    heap->nodeCounter = 0;
+    return true;
+  }
+
+  Node *lastParent = findParent(heap, heap->nodeCounter);
+  Node *lastNode;
+
+  // Verificação se pai == NULL, significando que o nó é raiz!
+
+  if (lastParent->pRight != NULL) {
+    lastNode = lastParent->pRight;
+    lastParent->pRight = NULL;
+  } else {
+    lastNode = lastParent->pLeft;
+    lastParent->pLeft = NULL;
+  }
+
+  heap->pRoot->data = lastNode->data;
+  free(lastNode);
+  heap->nodeCounter--;
+
+  // heapifyDown(heap, lastNode->identifier);
+
+  return true;
+}
+
 int main() { return 0; }
