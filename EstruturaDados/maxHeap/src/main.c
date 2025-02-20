@@ -173,4 +173,22 @@ bool pop(maxHeap *heap, Data *data) {
   return true;
 }
 
+void clearRecursive(Node *node) {
+  if (node == NULL) return;
+
+  clearRecursive(node->pLeft);
+  clearRecursive(node->pRight);
+  free(node);
+}
+
+bool clear(maxHeap *heap) {
+  if (heap == NULL) return false;
+
+  clearRecursive(heap->pRoot);
+  heap->pRoot = NULL;
+  heap->nodeCounter = 0;
+
+  return true;
+}
+
 int main() { return 0; }
