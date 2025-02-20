@@ -65,7 +65,7 @@ void heapifyUp(maxHeap *heap, Node *node) {
   if (node == heap->pRoot) return;
 
   Node *parent = findParent(heap, node->identifier);
-  while (parent != NULL && node->data.number < parent->data.number) {
+  while (parent != NULL && node->data.number > parent->data.number) {
     dataSwap(&node->data, &parent->data);
 
     node = parent;
@@ -75,17 +75,17 @@ void heapifyUp(maxHeap *heap, Node *node) {
 
 void heapifyDown(maxHeap *heap, Node *node) {
   while (node->pLeft != NULL) {
-    Node *smallest = node->pLeft;
+    Node *largest = node->pLeft;
 
-    if (node->pRight != NULL && node->pRight->data.number < node->pLeft->data.number) {
-      smallest = node->pRight;
+    if (node->pRight != NULL && node->pRight->data.number > node->pLeft->data.number) {
+      largest = node->pRight;
     }
 
-    if (node->data.number <= smallest->data.number) break;
+    if (node->data.number >= largest->data.number) break;
 
-    dataSwap(&node->data, &smallest->data);
+    dataSwap(&node->data, &largest->data);
 
-    node = smallest;
+    node = largest;
   }
 }
 
@@ -134,7 +134,7 @@ bool push(maxHeap *heap, Data *data) {
   return true;
 }
 
-bool empty(maxHeap *heap) { return heap->nodeCounter = 0; }
+bool empty(maxHeap *heap) { return heap->nodeCounter == 0; }
 
 bool pop(maxHeap *heap, Data *data) {
   if (empty(heap)) {
@@ -168,7 +168,7 @@ bool pop(maxHeap *heap, Data *data) {
   free(lastNode);
   heap->nodeCounter--;
 
-  // heapifyDown(heap, heap->pRoot);
+  heapifyDown(heap, heap->pRoot);
 
   return true;
 }
