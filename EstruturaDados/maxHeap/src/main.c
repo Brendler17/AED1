@@ -19,6 +19,12 @@ typedef struct {
   size_t nodeCounter;
 } maxHeap;
 
+void dataSwap(Data *a, Data *b) {
+  Data temp = *a;
+  *a = *b;
+  *b = temp;
+}
+
 int *convertNumberToBits(int number, size_t *size) {
   *size = (int)(log2(number)) + 1;
   int *bits = (int *)malloc(*size * sizeof(int));
@@ -53,6 +59,18 @@ Node *findParent(maxHeap *heap, int identifier) {
 
   free(idInBits);
   return parent;
+}
+
+void heapifyUp(maxHeap *heap, Node *node) {
+  if (node == heap->pRoot) return;
+
+  Node *parent = findParent(heap, node->identifier);
+  while (parent != NULL && node->data.number < parent->data.number) {
+    dataSwap(&node->data, &parent->data);
+
+    node = parent;
+    parent = findParent(heap, node->identifier);
+  }
 }
 
 bool reset(maxHeap **heap) {
@@ -94,7 +112,7 @@ bool push(maxHeap *heap, Data *data) {
     parent->pRight = newNode;
   }
 
-  // heapifyUp(heap, newNode);
+  heapifyUp(heap, newNode);
 
   heap->nodeCounter++;
   return true;
