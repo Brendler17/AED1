@@ -73,6 +73,22 @@ void heapifyUp(maxHeap *heap, Node *node) {
   }
 }
 
+void heapifyDown(maxHeap *heap, Node *node) {
+  while (node->pLeft != NULL) {
+    Node *smallest = node->pLeft;
+
+    if (node->pRight != NULL && node->pRight->data.number < node->pLeft->data.number) {
+      smallest = node->pRight;
+    }
+
+    if (node->data.number <= smallest->data.number) break;
+
+    dataSwap(&node->data, &smallest->data);
+
+    node = smallest;
+  }
+}
+
 bool reset(maxHeap **heap) {
   *heap = (maxHeap *)malloc(sizeof(maxHeap));
   if (*heap == NULL) {
@@ -152,7 +168,7 @@ bool pop(maxHeap *heap, Data *data) {
   free(lastNode);
   heap->nodeCounter--;
 
-  // heapifyDown(heap, lastNode->identifier);
+  // heapifyDown(heap, heap->pRoot);
 
   return true;
 }
