@@ -87,7 +87,21 @@ int GetPerson( void **pBuffer, void **userOption, void **counterPeoples, void **
 		*currentPerson = NULL;
 		return 0;
 	}
-	return 0;
+	
+	tempBuffer = ( void * )realloc( *pBuffer, *(size_t *)*(bufferSize) - 2 * sizeof( int ) );
+	if ( tempBuffer == NULL ) {
+		printf( "\nErro ao alocar memória! Get.2\n" );
+		return 1;
+	}
+
+	*pBuffer = tempBuffer;
+	tempBuffer = NULL;
+	UpdatePointers(pBuffer, userOption, counterPeoples, bufferSize, peoplesBuffer, name, email, age);
+	endBuffer = *pBuffer + (*(size_t *)*(bufferSize)) - 2 * sizeof( int );
+	*(size_t *)*(bufferSize) = (size_t)( endBuffer - *pBuffer );
+
+	offset = *age;
+	*currentPerson = *peoplesBuffer + *(int *)offset;
 }
 
 
