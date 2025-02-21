@@ -191,4 +191,65 @@ bool clear(maxHeap *heap) {
   return true;
 }
 
+void printHeapPreOrder(Node *node, int depth) {
+  if (node == NULL) return;
+
+  for (int counter = 0; counter < depth; counter++) printf("\t");
+  printf("%d\n", node->data.number);
+
+  printHeapPreOrder(node->pLeft, depth + 1);
+  printHeapPreOrder(node->pRight, depth + 1);
+}
+
+void printHeapInOrder(Node *node, int depth) {
+  if (node == NULL) return;
+
+  printHeapInOrder(node->pLeft, depth + 1);
+
+  for (int counter = 0; counter < depth; counter++) printf("\t");
+  printf("%d\n", node->data.number);
+
+  printHeapInOrder(node->pRight, depth + 1);
+}
+
+void printHeapPostOrder(Node *node, int depth) {
+  if (node == NULL) return;
+
+  printHeapPostOrder(node->pLeft, depth + 1);
+  printHeapPostOrder(node->pRight, depth + 1);
+
+  for (int counter = 0; counter < depth; counter++) printf("\t");
+  printf("%d\n", node->data.number);
+}
+
+void printHeap(maxHeap *heap) {
+  if (empty(heap)) {
+    printf("\nError! Empty Heap!\n");
+    return;
+  }
+
+  int type;
+
+  printf("1. Pre-Order\n2. Central\n3.Post-Order");
+  printf("\nYou'r choice: ");
+  scanf("%d", &type);
+
+  printf("Heap structure:\n");
+  switch (type) {
+    case 1:
+      printHeapPreOrder(heap->pRoot, 0);
+      break;
+    case 2:
+      printHeapInOrder(heap->pRoot, 0);
+      break;
+    case 3:
+      printHeapPostOrder(heap->pRoot, 0);
+      break;
+    default:
+      printf("\nWrong Option!\n");
+      break;
+  }
+  printf("\n");
+}
+
 int main() { return 0; }
