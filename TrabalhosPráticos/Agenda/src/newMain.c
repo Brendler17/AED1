@@ -29,7 +29,7 @@ GetPerson
 int GetPerson( void **pBuffer, void **userOption, void **counterPeoples, void **bufferSize, void **peoplesBuffer, void **currentPerson, void **name, void **email, void **age ) {
 	void *tempBuffer, *endBuffer, *offset, *counter, *position;
 
-	tempBuffer = realloc( *pBuffer, *(size_t *)*(bufferSize) + 2 * sizeof( int ) );
+	tempBuffer = ( void * )realloc( *pBuffer, *(size_t *)*(bufferSize) + 2 * sizeof( int ) );
 	if ( tempBuffer == NULL ) {
 		printf( "\nErro ao alocar memória! Get.1\n" );
 		return 1;
@@ -58,7 +58,8 @@ int GetPerson( void **pBuffer, void **userOption, void **counterPeoples, void **
 			*(int *)offset += sizeof( int );
 		}
 	} else if ( *(int *)*(userOption) == 2 ) {
-		printf( "\nDigite o nº de registro para remover (1 a %d): ", *(int *)*(counterPeoples) );
+		*(int *)*(counterPeoples) == 1 ? printf( "\nDigite o nº de registro para remover (1): " ) : printf( "\nDigite o nº de registro para remover (1 a %d): ", *(int *)*(counterPeoples) );
+		
 		scanf( "%d", (int *)position );
 		if ( *(int *)position <= 0 || *(int *)position > *(int *)*(counterPeoples) ) {
 			system( "clear" );
@@ -102,6 +103,8 @@ int GetPerson( void **pBuffer, void **userOption, void **counterPeoples, void **
 
 	offset = *age;
 	*currentPerson = *peoplesBuffer + *(int *)offset;
+
+	return 0;
 }
 
 
@@ -164,7 +167,7 @@ int main( int argc, char const *argv[] ) {
 				scanf( " %50[^\n]", (char *)email );
 				getchar();
 
-				tempBuffer = realloc( pBuffer, *(size_t *)bufferSize + (strlen( (char *)name ) + 1) * sizeof( char ) + (strlen( (char *)email ) + 1) * sizeof( char ) + sizeof( int ) );
+				tempBuffer = ( void * )realloc( pBuffer, *(size_t *)bufferSize + (strlen( (char *)name ) + 1) * sizeof( char ) + (strlen( (char *)email ) + 1) * sizeof( char ) + sizeof( int ) );
 				if ( tempBuffer == NULL ) {
 					printf( "\nErro ao alocar memória! 1.1\n" );
 					free( pBuffer );
@@ -200,7 +203,7 @@ int main( int argc, char const *argv[] ) {
 			// Remove um registro do buffer através de index
 			case 2: {
 				if ( *(int *)counterPeoples != 0 ) {
-					tempBuffer = realloc( pBuffer, *(size_t *)bufferSize + sizeof( int ) );
+					tempBuffer = ( void * )realloc( pBuffer, *(size_t *)bufferSize + sizeof( int ) );
 					if ( tempBuffer == NULL ) {
 						printf( "\nErro ao alocar memória! 2.1\n" );
 						free( pBuffer );
@@ -213,12 +216,14 @@ int main( int argc, char const *argv[] ) {
 					endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof( int );
 					*(size_t *)bufferSize = (size_t)( endBuffer - pBuffer );
 
-					currentPerson = peoplesBuffer;
+					counter = endBuffer - sizeof( int );
+
 					system( "clear" );
 					printf( "\n-------------- Remover Pessoa --------------\n\n" );
-
-					for ( int i = 0; i < *(int *)counterPeoples; i++ ) {
-						printf( "----------------- Registro %d ---------------\n", i + 1 );
+					
+					currentPerson = peoplesBuffer;
+					for ( *(int *)counter = 0 ; *(int *)counter < *(int *)counterPeoples ; (*(int *)counter)++ ) {
+						printf( "----------------- Registro %d ---------------\n", *(int *)counter + 1 );
 						printf( "Nome: %s\n", (char *)currentPerson );
 						currentPerson += (strlen( (char *)currentPerson ) + 1) * sizeof( char );
 						printf( "E-Mail: %s\n", (char *)currentPerson );
@@ -226,6 +231,7 @@ int main( int argc, char const *argv[] ) {
 						printf( "Idade: %d\n", *(int *)currentPerson );
 						currentPerson += sizeof( int );
 					}
+					currentPerson = NULL;
 
 					if ( GetPerson( &pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &currentPerson, &name, &email, &age ) ) {
 						free( pBuffer );
@@ -239,11 +245,16 @@ int main( int argc, char const *argv[] ) {
 					printf( "E-Mail: %s\n", (char *)auxPerson );
 					auxPerson += (strlen( (char *)auxPerson ) + 1) * sizeof( char );
 					printf( "Idade: %d\n", *(int *)auxPerson );
+					auxPerson += sizeof( int );
 
-					memmove( currentPerson, currentPerson + *(int *)age, *(size_t *)bufferSize - ((currentPerson - pBuffer) + *(int *)age) );
+					offset = age;
+					*(int *)offset = ( strlen((char *)currentPerson) + 1 ) + ( strlen((char *)(currentPerson + strlen((char *)currentPerson) + 1)) + 1 ) + sizeof( int );
+
+					memmove( currentPerson, currentPerson + *(int *)offset, *(size_t *)bufferSize - ((currentPerson - pBuffer) + *(int *)offset) );
+
 					(*(int *)counterPeoples)--;
 
-					tempBuffer = realloc( pBuffer, *(size_t *)bufferSize - *(int *)age - sizeof( int ) );
+					tempBuffer = ( void * )realloc( pBuffer, *(size_t *)bufferSize - *(int *)age - sizeof( int ) );
 					if ( tempBuffer == NULL ) {
 						printf( "\nErro ao alocar memória! 2.2\n" );
 						free( pBuffer );
@@ -253,6 +264,9 @@ int main( int argc, char const *argv[] ) {
 					pBuffer = tempBuffer;
 					tempBuffer = NULL;
 					UpdatePointers( &pBuffer, &userOption, &counterPeoples, &bufferSize, &peoplesBuffer, &name, &email, &age );
+					offset = age;
+          endBuffer = pBuffer + (*(size_t *)bufferSize) - *(int *)offset - sizeof( int );
+          *(size_t *)bufferSize = (size_t)(endBuffer - pBuffer);
 
 					system( "clear" );
 					printf( "\nRegistro removido com sucesso!\n" );
@@ -283,6 +297,7 @@ int main( int argc, char const *argv[] ) {
 						printf( "E-Mail: %s\n", (char *)currentPerson );
 						currentPerson += (strlen( (char *)currentPerson ) + 1) * sizeof( char );
 						printf( "Idade: %d\n", *(int *)currentPerson );
+						currentPerson += sizeof( int );
 						printf( "-------------------------------------------\n" );
 					} else {
 						system( "clear" );
@@ -297,7 +312,7 @@ int main( int argc, char const *argv[] ) {
 			// Listar todos os registros do buffer
 			case 4: {
 				if ( *(int *)counterPeoples != 0 ) {
-					tempBuffer = realloc( pBuffer, *(size_t *)bufferSize + sizeof( int ) );
+					tempBuffer = ( void * )realloc( pBuffer, *(size_t *)bufferSize + sizeof( int ) );
 					if ( tempBuffer == NULL ) {
 						printf( "\nErro ao alocar memória! 4.1\n" );
 						free( pBuffer );
@@ -310,10 +325,12 @@ int main( int argc, char const *argv[] ) {
 					endBuffer = pBuffer + (*(size_t *)bufferSize) + sizeof( int );
 					*(size_t *)bufferSize = (size_t)( endBuffer - pBuffer );
 
-					currentPerson = peoplesBuffer;
+					counter = endBuffer - sizeof( int );
+
 					system( "clear" );
 					printf( "\n--------------- Listar Agenda ---------------\n" );
-
+					
+					currentPerson = peoplesBuffer;
 					for ( int i = 0; i < *(int *)counterPeoples; i++ ) {
 						printf( "Nome: %s\n", (char *)currentPerson );
 						currentPerson += (strlen( (char *)currentPerson ) + 1) * sizeof( char );
@@ -323,8 +340,9 @@ int main( int argc, char const *argv[] ) {
 						currentPerson += sizeof( int );
 						printf( "----------------------------------------------\n" );
 					}
+					currentPerson = NULL;
 
-					tempBuffer = realloc( pBuffer, *(size_t *)bufferSize - sizeof( int ) );
+					tempBuffer = ( void * )realloc( pBuffer, *(size_t *)bufferSize - sizeof( int ) );
 					if ( tempBuffer == NULL ) {
 						printf( "\nErro ao alocar memória! 4.2\n" );
 						free( pBuffer );
