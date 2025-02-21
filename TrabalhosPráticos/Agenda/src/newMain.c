@@ -254,7 +254,7 @@ int main( int argc, char const *argv[] ) {
 
 					(*(int *)counterPeoples)--;
 
-					tempBuffer = ( void * )realloc( pBuffer, *(size_t *)bufferSize - *(int *)age - sizeof( int ) );
+					tempBuffer = ( void * )realloc( pBuffer, *(size_t *)bufferSize - *(int *)offset - sizeof( int ) );
 					if ( tempBuffer == NULL ) {
 						printf( "\nErro ao alocar memória! 2.2\n" );
 						free( pBuffer );
