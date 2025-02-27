@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct Page {
-  char url;
+  char* url;
   struct Page* nextPage;
   struct Page* prevPage;
 } Page;
@@ -27,7 +28,13 @@ BrowserHistory* browserHistoryCreate(char* homepage) {
     return NULL;
   }
 
-  firstPage->url = *homepage;
+  firstPage->url = (char*)malloc((strlen(homepage) + 1) * sizeof(char));
+  if (firstPage->url == NULL) {
+    printf("\nError allocating memory!\n");
+    return NULL;
+  }
+
+  strcpy(firstPage->url, homepage);
   firstPage->nextPage = NULL;
   firstPage->prevPage = NULL;
   browserHistory->firstPage = firstPage;
@@ -45,9 +52,26 @@ void browserHistoryVisit(BrowserHistory* obj, char* url) {
     return;
   }
 
-  // através do currentPage apagar todo histórico que tiver depois dele
+  if (obj->currentPage != obj->lastPage) {
+    Page* lostPage = obj->currentPage->nextPage;
 
-  newPage->url = *url;
+    while (lostPage != NULL) {
+      Page* auxPage = lostPage;
+      lostPage = lostPage->nextPage;
+      free(auxPage);
+      obj->numberOfPages--;
+    }
+
+    obj->lastPage = obj->currentPage;
+  }
+
+  newPage->url = (char*)malloc((strlen(url) + 1) * sizeof(char));
+  if (newPage->url == NULL) {
+    printf("\nError allocating memory!\n");
+    return;
+  }
+
+  strcpy(newPage->url, url);
   newPage->nextPage = NULL;
   newPage->prevPage = obj->lastPage;
   obj->lastPage->nextPage = newPage;
@@ -57,42 +81,29 @@ void browserHistoryVisit(BrowserHistory* obj, char* url) {
 }
 
 char* browserHistoryBack(BrowserHistory* obj, int steps) {
-  Page* currentPage;
+  Page* currentPage = obj->currentPage;
 
-  if (steps > obj->numberOfPages) {
-    currentPage = obj->firstPage;
-    return &currentPage->url;
-  }
-
-  currentPage = obj->currentPage;
-  int counter = steps;
-
-  while (counter > 0) {
+  while (steps > 0 && currentPage->prevPage != NULL) {
     currentPage = currentPage->prevPage;
-    counter--;
+    steps--;
   }
 
   obj->currentPage = currentPage;
 
-  return &currentPage->url;
+  return currentPage->url;
 }
 
 char* browserHistoryForward(BrowserHistory* obj, int steps) {
-  if (steps > obj->numberOfPages || obj->currentPage == obj->lastPage) {
-    return NULL;
-  }
-
   Page* currentPage = obj->currentPage;
-  int counter = steps;
 
-  while (counter > 0) {
+  while (steps > 0 && currentPage->nextPage != NULL) {
     currentPage = currentPage->nextPage;
-    counter--;
+    steps--;
   }
 
   obj->currentPage = currentPage;
 
-  return &currentPage->url;
+  return currentPage->url;
 }
 
 void browserHistoryFree(BrowserHistory* obj) {
@@ -102,6 +113,7 @@ void browserHistoryFree(BrowserHistory* obj) {
   while (currentPage != NULL) {
     aux = currentPage;
     currentPage = currentPage->nextPage;
+    free(aux->url);
     free(aux);
   }
 
@@ -112,18 +124,35 @@ void browserHistoryFree(BrowserHistory* obj) {
 }
 
 int main() {
-  char homepage[] = {"twitch.tv"};
-  char url[] = {"hltv.org"};
+  // Criando o histórico com a página inicial "leetcode.com"
+  BrowserHistory* browserHistory = browserHistoryCreate("leetcode.com");
 
-  BrowserHistory* obj = browserHistoryCreate(homepage);
+  // Visitando novas páginas
+  browserHistoryVisit(browserHistory, "google.com");
+  browserHistoryVisit(browserHistory, "facebook.com");
+  browserHistoryVisit(browserHistory, "youtube.com");
 
-  /*
-  browserHistoryVisit(obj, url);
+  // Movendo para trás no histórico
+  printf("%s\n", browserHistoryBack(browserHistory, 1));  // Deve retornar "facebook.com"
+  printf("%s\n", browserHistoryBack(browserHistory, 1));  // Deve retornar "google.com"
 
-  char* param_2 = browserHistoryBack(obj, steps);
-  char* param_3 = browserHistoryForward(obj, steps);
+  // Movendo para frente no histórico
+  printf("%s\n", browserHistoryForward(browserHistory, 1));  // Deve retornar "facebook.com"
 
-  browserHistoryFree(obj);
-  */
+  // Visitando uma nova página (isso deve apagar o histórico à frente)
+  browserHistoryVisit(browserHistory, "linkedin.com");
+
+  // Tentando avançar além do limite (não pode ir para frente)
+  printf("%s\n", browserHistoryForward(browserHistory, 2));  // Deve retornar "linkedin.com"
+
+  // Movendo para trás 2 páginas
+  printf("%s\n", browserHistoryBack(browserHistory, 2));  // Deve retornar "google.com"
+
+  // Tentando mover para trás além do limite
+  printf("%s\n", browserHistoryBack(browserHistory, 7));  // Deve retornar "leetcode.com"
+
+  // Liberando memória alocada
+  browserHistoryFree(browserHistory);
+
   return 0;
 }
