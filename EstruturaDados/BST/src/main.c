@@ -138,10 +138,21 @@ void printTreePreOrder(Node* node, int depth) {
   printTreePreOrder(node->pRight, depth + 1);
 }
 
+void printTreeInOrder(Node* node, int depth) {
+  if (node == NULL) return;
+
+  printTreeInOrder(node->pLeft, depth + 1);
+
+  for (int i = 0; i < depth; i++) printf("  ");
+  printf("%d\n", node->data.value);
+
+  printTreeInOrder(node->pRight, depth + 1);
+}
+
 void printTree(Tree* tree) {
   if (tree == NULL) return;
 
-  printTreePreOrder(tree->pRoot, 0);
+  printTreeInOrder(tree->pRoot, 0);
 }
 
 int main(int argc, char const* argv[]) {
