@@ -119,4 +119,19 @@ bool push(Tree *tree, Data *data) {
   return true;
 }
 
-int main() { return 0; }
+int main() {
+  Tree *tree;
+  reset(&tree);
+
+  Data data1 = {10};
+  Data data2 = {20};
+  Data data3 = {30};
+  Data data4 = {15};
+
+  push(tree, &data1);
+  push(tree, &data2);
+  push(tree, &data3);
+  push(tree, &data4);
+
+  return 0;
+}
