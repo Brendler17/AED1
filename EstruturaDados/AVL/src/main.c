@@ -30,12 +30,6 @@ bool reset(Tree **tree) {
   return true;
 }
 
-int getBalancingFactor(Node *node) {
-  if (node == NULL) return 0;
-
-  return getHeight(node->pLeft) - getHeight(node->pRight);
-}
-
 int getHeight(Node *node) {
   if (node == NULL) return 0;
 
@@ -43,6 +37,12 @@ int getHeight(Node *node) {
   int counterRight = getHeight(node->pRight);
 
   return (counterLeft > counterRight ? counterLeft : counterRight) + 1;
+}
+
+int getBalancingFactor(Node *node) {
+  if (node == NULL) return 0;
+
+  return getHeight(node->pLeft) - getHeight(node->pRight);
 }
 
 Node *simpleLeftRotation(Node *pivot) {
@@ -119,19 +119,66 @@ bool push(Tree *tree, Data *data) {
   return true;
 }
 
+void treePreOrder(Node *node, int depth) {
+  if (node == NULL) return;
+
+  for (int i = 0; i < depth; i++) printf("  ");
+  printf("%zu\n", node->data.identifier);
+
+  treePreOrder(node->pLeft, depth + 1);
+  treePreOrder(node->pRight, depth + 1);
+}
+
+void treePosOrder(Node *node, int depth) {
+  if (node == NULL) return;
+
+  treePosOrder(node->pLeft, depth + 1);
+  treePosOrder(node->pRight, depth + 1);
+
+  for (int i = 0; i < depth; i++) printf("  ");
+  printf("%zu\n", node->data.identifier);
+}
+
+void treeInOrder(Node *node, int depth) {
+  if (node == NULL) return;
+
+  treeInOrder(node->pLeft, depth + 1);
+
+  for (int i = 0; i < depth; i++) printf("  ");
+  printf("%zu\n", node->data.identifier);
+
+  treeInOrder(node->pRight, depth + 1);
+}
+
+void printTree(Tree *tree) {
+  if (tree == NULL) return;
+
+  treePreOrder(tree->pRoot, 0);
+}
+
 int main() {
+  int number;
+
   Tree *tree;
-  reset(&tree);
+  if (!(reset(&tree))) {
+    return 1;
+  }
 
-  Data data1 = {10};
-  Data data2 = {20};
-  Data data3 = {30};
-  Data data4 = {15};
+  do {
+    printf("Enter a number: ");
+    scanf("%d", &number);
 
-  push(tree, &data1);
-  push(tree, &data2);
-  push(tree, &data3);
-  push(tree, &data4);
+    if (number == 0) {
+      break;
+    }
+
+    Data data = {number};
+
+    push(tree, &data);
+
+    printTree(tree);
+
+  } while (number != 0);
 
   return 0;
 }
