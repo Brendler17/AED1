@@ -46,6 +46,8 @@ int getHeight(Node *node) {
 }
 
 Node *simpleLeftRotation(Node *pivot) {
+  if (pivot == NULL || pivot->pRight == NULL) return pivot;
+
   Node *aux = pivot->pRight;
   pivot->pRight = aux->pLeft;
   aux->pLeft = pivot;
@@ -54,6 +56,8 @@ Node *simpleLeftRotation(Node *pivot) {
 }
 
 Node *simpleRightRotation(Node *pivot) {
+  if (pivot == NULL || pivot->pLeft == NULL) return pivot;
+
   Node *aux = pivot->pLeft;
   pivot->pLeft = aux->pRight;
   aux->pRight = pivot;
@@ -62,19 +66,20 @@ Node *simpleRightRotation(Node *pivot) {
 }
 
 Node *balanced(Node *node) {
+  if (node == NULL) return NULL;
+
   int balancingFactor = getBalancingFactor(node);
 
   if (balancingFactor > 1) {
     if (getBalancingFactor(node->pLeft) < 0) {
       node->pLeft = simpleLeftRotation(node->pLeft);
     }
-    node = simpleRightRotation(node);
-
+    return simpleRightRotation(node);
   } else if (balancingFactor < -1) {
     if (getBalancingFactor(node->pRight) > 0) {
       node->pRight = simpleRightRotation(node->pRight);
     }
-    node = simpleLeftRotation(node);
+    return simpleLeftRotation(node);
   }
 
   return node;
