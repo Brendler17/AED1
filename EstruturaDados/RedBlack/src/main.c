@@ -2,19 +2,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef enum { RED, BLACK } Color;
+
 typedef struct {
   size_t identifier;
 } Data;
 
 typedef struct Node {
   Data data;
+  Color color;
   struct Node *pLeft;
   struct Node *pRight;
+  struct Node *pParent;
 } Node;
 
 typedef struct {
   Node *pRoot;
-  size_t nodeCounter;
+  Node *pNil;
 } Tree;
 
 bool reset(Tree **tree) {
@@ -25,7 +29,7 @@ bool reset(Tree **tree) {
   }
 
   (*tree)->pRoot = NULL;
-  (*tree)->nodeCounter = 0;
+  (*tree)->pNil = NULL;
 
   return true;
 }
