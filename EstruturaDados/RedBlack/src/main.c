@@ -21,6 +21,25 @@ typedef struct {
   Node *pNil;
 } Tree;
 
+Node *getGrandParent(Node *node) {
+  if (node != NULL && node->pParent != NULL) {
+    return node->pParent->pParent;
+  }
+
+  return NULL;
+}
+
+Node *getUncle(Node *node) {
+  Node *grandParent = getGrandParent(node);
+  if (grandParent == NULL) return NULL;
+
+  if (node->pParent == grandParent->pLeft) {
+    return grandParent->pRight;
+  } else {
+    return grandParent->pLeft;
+  }
+}
+
 bool reset(Tree **tree) {
   *tree = (Tree *)malloc(sizeof(Tree));
   if (*tree == NULL) {
