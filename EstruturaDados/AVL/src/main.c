@@ -119,6 +119,57 @@ bool push(Tree *tree, Data *data) {
   return true;
 }
 
+Node *findMin(Node *node) {
+  while (node->pLeft != NULL) {
+    node = node->pLeft;
+  }
+
+  return node;
+}
+
+Node *popRecursive(Node *node, int value) {
+  if (node == NULL) return node;
+
+  if (value < node->data.identifier) {
+    node->pLeft = popRecursive(node->pLeft, value);
+  } else if (value > node->data.identifier) {
+    node->pRight = popRecursive(node->pRight, value);
+  } else {
+    if (node->pLeft == NULL && node->pRight == NULL) {
+      free(node);
+      return NULL;
+    }
+
+    if (node->pLeft == NULL) {
+      Node *aux = node->pRight;
+      free(node);
+      return balanced(aux);
+    } else if (node->pRight == NULL) {
+      Node *aux = node->pLeft;
+      free(node);
+      return balanced(aux);
+    }
+
+    Node *aux = findMin(node->pRight);
+    node->data = aux->data;
+    node->pRight = popRecursive(node->pRight, aux->data.identifier);
+  }
+
+  return balanced(node);
+}
+
+bool pop(Tree *tree, int value) {
+  if (tree == NULL) return false;
+
+  Node *newRoot = popRecursive(tree->pRoot, value);
+  if (newRoot == NULL) return false;
+
+  tree->pRoot = newRoot;
+  tree->nodeCounter--;
+
+  return true;
+}
+
 void treePreOrder(Node *node, int depth) {
   if (node == NULL) return;
 
