@@ -246,5 +246,8 @@ int main() {
 
   } while (number != 0);
 
+  clear(tree);
+  free(tree);
+
   return 0;
 }
