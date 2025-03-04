@@ -14,8 +14,23 @@ typedef struct Node {
 
 typedef struct {
   Node *pRoot;
-  int nodeCounter;
+  size_t nodeCounter;
 } Tree;
+
+int getHeight(Node *node) {
+  if (node == NULL) return 0;
+
+  int counterLeft = getHeight(node->pLeft);
+  int counterRight = getHeight(node->pRight);
+
+  return (counterLeft > counterRight ? counterLeft : counterRight) + 1;
+}
+
+int getBalancingFactor(Node *node) {
+  if (node == NULL) return 0;
+
+  return getHeight(node->pLeft) - getHeight(node->pRight);
+}
 
 int isAvl(Node *node) {
   int balancingFactor;
@@ -49,21 +64,6 @@ bool reset(Tree **tree) {
   (*tree)->nodeCounter = 0;
 
   return true;
-}
-
-int getHeight(Node *node) {
-  if (node == NULL) return 0;
-
-  int counterLeft = getHeight(node->pLeft);
-  int counterRight = getHeight(node->pRight);
-
-  return (counterLeft > counterRight ? counterLeft : counterRight) + 1;
-}
-
-int getBalancingFactor(Node *node) {
-  if (node == NULL) return 0;
-
-  return getHeight(node->pLeft) - getHeight(node->pRight);
 }
 
 Node *simpleLeftRotation(Node *pivot) {
