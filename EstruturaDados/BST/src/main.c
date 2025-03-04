@@ -157,6 +157,16 @@ void printTreeInOrder(Node* node, int depth) {
   printTreeInOrder(node->pRight, depth + 1);
 }
 
+void printTreePosOrder(Node* node, int depth) {
+  if (node == NULL) return;
+
+  printTreePosOrder(node->pLeft, depth + 1);
+  printTreePosOrder(node->pRight, depth + 1);
+
+  for (int i = 0; i < depth; i++) printf("  ");
+  printf("%d\n", node->data.value);
+}
+
 void printTree(Tree* tree) {
   if (tree == NULL) return;
 
