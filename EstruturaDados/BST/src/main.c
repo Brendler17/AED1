@@ -59,6 +59,14 @@ bool push(Tree* tree, Data* data) {
   return true;
 }
 
+Node* findMax(Node* node) {
+  while (node->pRight != NULL) {
+    node = node->pRight;
+  }
+
+  return node;
+}
+
 Node* findMin(Node* node) {
   while (node->pLeft != NULL) {
     node = node->pLeft;
