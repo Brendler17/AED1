@@ -17,6 +17,27 @@ typedef struct {
   int nodeCounter;
 } Tree;
 
+int isAvl(Node *node) {
+  int balancingFactor;
+
+  if (node == NULL) return 1;  // Uma árvore vazia é AVL por definição
+
+  if (!(isAvl(node->pLeft))) {  // Se a subárvore esquerda não for AVL, a árvore não é AVL
+    return 0;
+  }
+  if (!(isAvl(node->pRight))) {  // Se a subárvore direita não for AVL, a árvore não é AVL
+    return 0;
+  }
+
+  // Se o fator de balanceamento não estiver entre -1 e 1, a árvore não é AVL
+  balancingFactor = getBalancingFactor(node);
+  if ((balancingFactor > 1) || (balancingFactor < -1)) {
+    return 0;
+  } else {
+    return 1;  // Se todas as condições forem atendidas, a árvore é AVL
+  }
+}
+
 bool reset(Tree **tree) {
   *tree = (Tree *)malloc(sizeof(Tree));
   if (*tree == NULL) {
