@@ -170,6 +170,21 @@ bool pop(Tree *tree, int value) {
   return true;
 }
 
+void clearRecursive(Node *node) {
+  if (node == NULL) return;
+
+  clearRecursive(node->pLeft);
+  clearRecursive(node->pRight);
+  free(node);
+}
+
+bool clear(Tree *tree) {
+  if (tree == NULL) return false;
+
+  clearRecursive(tree->pRoot);
+  return true;
+}
+
 void treePreOrder(Node *node, int depth) {
   if (node == NULL) return;
 
