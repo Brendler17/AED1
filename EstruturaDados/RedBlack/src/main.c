@@ -72,7 +72,22 @@ Node *simpleRotationRight(Tree *tree, Node *pivot) {
 
   Node *aux = pivot->pLeft;
   pivot->pLeft = aux->pRight;
+  if (aux->pRight != tree->pNil) {
+    aux->pRight->pParent = pivot;
+  }
+
+  aux->pParent = pivot->pParent;
+
+  if (pivot->pParent == tree->pNil) {
+    tree->pRoot = aux;
+  } else if (pivot == pivot->pParent->pLeft) {
+    pivot->pParent->pLeft = aux;
+  } else {
+    pivot->pParent->pRight = aux;
+  }
+
   aux->pRight = pivot;
+  pivot->pParent = aux;
 
   return aux;
 }
@@ -81,7 +96,7 @@ void pushCase5(Tree *tree, Node *node) {
   Node *grandParent = getGrandParent(node);
 
   if ((node == node->pParent->pLeft) && (node->pParent == grandParent->pLeft)) {
-    simpleRotationRight(tree, grandParent);
+    simpleRightRotation(tree, grandParent);
   } else {
     simpleLeftRotation(tree, grandParent);
   }
@@ -96,7 +111,7 @@ void pushCase4(Tree *tree, Node *node) {
   if ((node == node->pParent->pRight) && (node->pParent == grandParent->pLeft)) {
     node = simpleLeftRotation(tree, node->pParent);
   } else if ((node == node->pParent->pLeft) && (node->pParent == grandParent->pRight)) {
-    node = simpleRotationRight(tree, node->pParent);
+    node = simpleRightRotation(tree, node->pParent);
   }
 
   pushCase5(tree, node);
