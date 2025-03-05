@@ -67,8 +67,8 @@ Node *simpleLeftRotation(Tree *tree, Node *pivot) {
   return aux;
 }
 
-Node *simpleRotationRight(Tree *tree, Node *pivot) {
-  if (pivot == NULL || pivot->pLeft == NULL) return NULL;
+Node *simpleRightRotation(Tree *tree, Node *pivot) {
+  if (pivot == NULL || pivot->pLeft == tree->pNil) return pivot;
 
   Node *aux = pivot->pLeft;
   pivot->pLeft = aux->pRight;
