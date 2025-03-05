@@ -120,7 +120,45 @@ void pushCase1(Tree *tree, Node *node) {
   }
 }
 
-Node *push(Tree *tree, Data *data) {}
+bool *push(Tree *tree, Data *data) {
+  Node *newNode = (Node *)malloc(sizeof(Node));
+  if (newNode == NULL) {
+    printf("\nError allocating memory!\n");
+    return false;
+  }
+
+  newNode->data = *data;
+  newNode->color = RED;
+  newNode->pLeft = tree->pNil;
+  newNode->pRight = tree->pNil;
+
+  Node *parent = tree->pNil;
+  Node *current = tree->pRoot;
+
+  while (current != tree->pNil) {
+    parent = current;
+
+    if (data->identifier < current->data.identifier) {
+      current = current->pLeft;
+    } else {
+      current = current->pRight;
+    }
+  }
+
+  newNode->pParent = parent;
+
+  if (parent == tree->pNil) {
+    tree->pRoot = newNode;
+  } else if (data->identifier < parent->data.identifier) {
+    parent->pLeft = newNode;
+  } else {
+    parent->pRight = newNode;
+  }
+
+  pushCase1(tree, newNode);
+
+  return true;
+}
 
 bool reset(Tree **tree) {
   *tree = (Tree *)malloc(sizeof(Tree));
