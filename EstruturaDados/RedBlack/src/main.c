@@ -129,8 +129,19 @@ bool reset(Tree **tree) {
     return false;
   }
 
-  (*tree)->pRoot = NULL;
-  (*tree)->pNil = NULL;
+  (*tree)->pNil = (Node *)malloc(sizeof(Node));
+  if ((*tree)->pNil == NULL) {
+    printf("\nError allocating memory!\n");
+    free(*tree);
+    return false;
+  }
+
+  (*tree)->pNil->color = BLACK;
+  (*tree)->pNil->pLeft = (*tree)->pNil;
+  (*tree)->pNil->pRight = (*tree)->pNil;
+  (*tree)->pNil->pParent = (*tree)->pNil;
+
+  (*tree)->pRoot = (*tree)->pNil;
 
   return true;
 }
