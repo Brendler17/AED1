@@ -96,7 +96,7 @@ void pushCase3(Tree *tree, Node *node) {
     node->pParent->color = BLACK;
     uncle->color = BLACK;
     grandParent->color = RED;
-    if (grandParent != NULL) {
+    if (grandParent != tree->pNil) {
       pushCase1(tree, grandParent);
     }
   } else {
