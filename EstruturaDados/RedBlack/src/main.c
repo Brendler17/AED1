@@ -79,12 +79,12 @@ void pushCase4(Tree *tree, Node *node) {
   Node *grandParent = getGrandParent(node);
 
   if ((node == node->pParent->pRight) && (node->pParent == grandParent->pLeft)) {
-    node->pLeft = simpleRotationLeft(tree, node->pParent);
+    node = simpleRotationLeft(tree, node->pParent);
   } else if ((node == node->pParent->pLeft) && (node->pParent == grandParent->pRight)) {
-    node->pRight = simpleRotationRight(tree, node->pParent);
+    node = simpleRotationRight(tree, node->pParent);
   }
 
-  pushCase5(tree, node->pParent);
+  pushCase5(tree, node);
 }
 
 void pushCase3(Tree *tree, Node *node) {
