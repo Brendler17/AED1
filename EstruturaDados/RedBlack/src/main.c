@@ -42,12 +42,27 @@ Node *getUncle(Node *node) {
   }
 }
 
-Node *simpleRotationLeft(Tree *tree, Node *pivot) {
-  if (pivot == NULL || pivot->pRight == NULL) return NULL;
+Node *simpleLeftRotation(Tree *tree, Node *pivot) {
+  if (pivot == NULL || pivot->pRight == tree->pNil) return pivot;
 
   Node *aux = pivot->pRight;
   pivot->pRight = aux->pLeft;
+  if (aux->pLeft != tree->pNil) {
+    aux->pLeft->pParent = pivot;
+  }
+
+  aux->pParent = pivot->pParent;
+
+  if (pivot->pParent == tree->pNil) {
+    tree->pRoot = aux;
+  } else if (pivot == pivot->pParent->pLeft) {
+    pivot->pParent->pLeft = aux;
+  } else {
+    pivot->pParent->pRight = aux;
+  }
+
   aux->pLeft = pivot;
+  pivot->pParent = aux;
 
   return aux;
 }
@@ -68,7 +83,7 @@ void pushCase5(Tree *tree, Node *node) {
   if ((node == node->pParent->pLeft) && (node->pParent == grandParent->pLeft)) {
     simpleRotationRight(tree, grandParent);
   } else {
-    simpleRotationLeft(tree, grandParent);
+    simpleLeftRotation(tree, grandParent);
   }
 
   node->pParent->color = BLACK;
@@ -79,7 +94,7 @@ void pushCase4(Tree *tree, Node *node) {
   Node *grandParent = getGrandParent(node);
 
   if ((node == node->pParent->pRight) && (node->pParent == grandParent->pLeft)) {
-    node = simpleRotationLeft(tree, node->pParent);
+    node = simpleLeftRotation(tree, node->pParent);
   } else if ((node == node->pParent->pLeft) && (node->pParent == grandParent->pRight)) {
     node = simpleRotationRight(tree, node->pParent);
   }
