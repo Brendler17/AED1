@@ -28,6 +28,6 @@ Original Code
 -> Complexity O(n)
 </h3>
 
-<h3>
+<h3>Submit do Leetcode</h3>
+
 ![Submit do Leetcode](https://ibb.co/BH6pLy13)
-</h3>
