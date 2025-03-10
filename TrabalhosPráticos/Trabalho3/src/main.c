@@ -1,31 +1,62 @@
 #include <stdio.h>
 
-struct TreeNode {
-  int val;
-  struct TreeNode* left;
-  struct TreeNode* right;
+/*
+====================
+TreeNode_t
+
+  Estrutura de um nó de árvore binária
+====================
+*/
+struct TreeNode_t {
+	int val;
+	struct TreeNode_t *left;
+	struct TreeNode_t *right;
 };
 
-struct TreeNode* getDepht(struct TreeNode* node, int* depht) {
-  if (node == NULL) {
-    *depht = 0;
-    return NULL;
-  }
+/*
+====================
+GetDepth_r
 
-  int dephtLeft = 0, dephtRight = 0;
-  struct TreeNode* left = getDepht(node->left, &dephtLeft);
-  struct TreeNode* right = getDepht(node->right, &dephtRight);
+  Retorna o nó mais profundo e sua profundidade
+====================
+*/
+struct TreeNode_t *GetDepth_r( struct TreeNode_t *node, int *depth ) {
+	if ( node == NULL ) {
+		*depth = 0;
+		return NULL;
+	}
 
-  *depht = 1 + (dephtLeft > dephtRight ? dephtLeft : dephtRight);
+	int depthLeft = 0, depthRight = 0;
+	struct TreeNode_t *left = GetDepth_r( node->left, &depthLeft );
+	struct TreeNode_t *right = GetDepth_r( node->right, &depthRight );
 
-  if (dephtLeft == dephtRight) return node;
-  return (dephtLeft > dephtRight) ? left : right;
+	*depth = 1 + ( depthLeft > depthRight ? depthLeft : depthRight );
+
+	if ( depthLeft == depthRight ) {
+		return node;
+	}
+	return ( depthLeft > depthRight ) ? left : right;
 }
 
-struct TreeNode* subtreeWithAllDeepest(struct TreeNode* root) {
-  int depht = 0;
+/*
+====================
+SubtreeWithAllDeepest
 
-  return getDepht(root, &depht);
+  Retorna a menor subárvore contendo todos os nós mais profundos
+====================
+*/
+struct TreeNode_t *SubtreeWithAllDeepest( struct TreeNode_t *root ) {
+	int depth = 0;
+	return GetDepth_r( root, &depth );
 }
 
-int main() { return 0; }
+/*
+====================
+Main
+
+  Função principal
+====================
+*/
+int main( void ) {
+	return 0;
+}
