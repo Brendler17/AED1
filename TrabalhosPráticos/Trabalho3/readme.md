@@ -1,6 +1,6 @@
 <h1 align="center"> Algoritmos e Estrutura de Dados 1 </h1>
-<h2 align="center"> Trabalho Prático 3 - Estrutura de Dados </h2>
-<h2 align="center"> Gustavo Marcos Brendler </h2>
+<h2 align="center"> Trabalho Prático 3 - Árvores </h2>
+<h3 align="center"> Gustavo Marcos Brendler </h2>
 <br>
 
 <h3 align="justify"> Smallest Subtree with all the Deepest Nodes</h3>
@@ -15,7 +15,7 @@ A node is called <b>the deepest</b> if it has the largest depth possible among a
 The <b>subtree</b> of a node is a tree consisting of that node, plus the set of all descendants of that node.
 <br>
 
-This problem was taken from <a href=https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/description/ >LeetCode</a>
+This problem was taken from <a href=https://leetcode.com/problems/smallest-subtree-with-all-the-deepest-nodes/description/ >LeetCode</a>.
 </p>
 
 <br>
@@ -29,5 +29,5 @@ Original Code
 </h3>
 
 <h3>
-<img href="https://ibb.co/BH6pLy13" />
+<img src="https://ibb.co/BH6pLy13" alt="Submit do Leetcode"/>
 </h3>
