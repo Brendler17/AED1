@@ -30,4 +30,4 @@ Original Code
 
 <h3>Submit do Leetcode</h3>
 
-![Submit do Leetcode](https://ibb.co/BH6pLy13)
+[Submite do Leetcode](https://postimg.cc/w3GJn0KV)
