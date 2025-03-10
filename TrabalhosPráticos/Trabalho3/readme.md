@@ -29,5 +29,5 @@ Original Code
 </h3>
 
 <h3>
-<img src="https://ibb.co/BH6pLy13" alt="Submit do Leetcode"/>
+![Submit do Leetcode](https://ibb.co/BH6pLy13)
 </h3>
