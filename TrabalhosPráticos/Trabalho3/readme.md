@@ -30,5 +30,5 @@ Original Code
 
 <h3>Submit do Leetcode</h3>
 <p align="center">
-  <img title="Submit do Leetcode" width="25%" src="https://i.ibb.co/r2kWwvgC/Captura-de-tela-de-2025-03-09-21-28-17.png">
+  <img title="Submit do Leetcode" width="100%" src="https://i.ibb.co/r2kWwvgC/Captura-de-tela-de-2025-03-09-21-28-17.png">
 </p>
