@@ -28,7 +28,7 @@ int maxProfitAssignment(int *difficulty, int difficultySize, int *profit, int pr
   int maxProfit = 0, higherProfit = 0;
   int i = 0;
   for (int counter = 0; counter < workerSize; counter++) {
-    while (i < difficultySize && jobs[counter].difficulty <= worker[counter]) {
+    while (i < difficultySize && jobs[i].difficulty <= worker[counter]) {
       if (jobs[i].profit > higherProfit) {
         higherProfit = jobs[i].profit;
       }
