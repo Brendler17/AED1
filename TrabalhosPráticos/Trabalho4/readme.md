@@ -25,7 +25,7 @@ This problem was taken from <a href=https://leetcode.com/problems/most-profit-as
 <br>
 <h3>
 
-<a href="https://github.com/Brendler17/AED1/blob/main/TrabalhosPráticos/Trabalho3/src/main.c">
+<a href="https://github.com/Brendler17/AED1/blob/main/TrabalhosPráticos/Trabalho4/src/main.c">
 Original Code
 </a>
 -> 60/ 60 testcases passed
